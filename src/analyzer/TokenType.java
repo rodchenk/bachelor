@@ -3,6 +3,6 @@ package analyzer;
 public enum TokenType {
 	EOL,
 	OPERATOR,
-	NUMBER,
+	NUMBER, STRING, UNKNOWN,
 	
 }
