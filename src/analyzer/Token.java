@@ -17,4 +17,9 @@ public class Token {
 	public String getValue() {
 		return this.tok_val;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s with value %s", this.tok_type, this.tok_val);
+	}
 }
