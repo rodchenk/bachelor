@@ -14,6 +14,7 @@ public class Lexer {
 	String context;
 	int position, context_length;
 	List<Token> tok_list;
+	boolean quotes_opened = false;
 	
 	public Lexer(String context) {
 		this.context = context;
@@ -34,16 +35,22 @@ public class Lexer {
 	
 	private List<String> getLexemes() {
 		StringBuilder sb;
+		String current_char_to_string;
+		boolean should_take_next = false;
 		List<String> lexemes = new ArrayList<>();
-		//TODO whilte loop might be false
+
 		while(hasNext()) {
 			sb = new StringBuilder();
-			char current_character;
 			do {
-				current_character = next();
-				if(!Character.isWhitespace(current_character))
-					sb.append(current_character);
-			}while(hasNext() && LexerUtility.isSameType(String.valueOf(context.charAt(position)), String.valueOf(current_character)) );
+				current_char_to_string = String.valueOf(next());
+				while(quotes_opened) {
+					sb.append(current_char_to_string);
+					current_char_to_string = String.valueOf(next());
+				}
+				sb.append(current_char_to_string);
+				should_take_next = hasNext() && !LexerUtility.isBracket(current_char_to_string) &&
+						LexerUtility.isSameType(String.valueOf(context.charAt(position)), current_char_to_string);
+			}while(should_take_next);
 			
 			lexemes.add(sb.toString());
 		}
@@ -62,6 +69,9 @@ public class Lexer {
 	 * @return next character of context and increment it by one
 	 */
 	private char next() {
-		return context.charAt(position++);
+		char next = context.charAt(position++);
+		if(next == '"') 
+			quotes_opened = !quotes_opened;
+		return next;
 	}
 }
