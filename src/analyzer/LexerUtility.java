@@ -56,7 +56,6 @@ public class LexerUtility {
 	static boolean isOperator(String current) {
 		if(current.length() == 1) 
 			return OPERATORS.contains(current);
-		
 		return isThatTypeByRegEx("\\*\\/\\+\\-", current);
 	}
 	
