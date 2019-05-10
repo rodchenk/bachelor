@@ -8,6 +8,11 @@ import java.util.List;
 
 import analyzer.Lexer;
 import analyzer.Token;
+import analyzer.TokenType;
+import analyzer.ast.BinaryExpression;
+import analyzer.ast.Expression;
+import analyzer.ast.NumberExpression;
+import analyzer.ast.Parser;
 
 public class Compiler {
 
@@ -21,7 +26,13 @@ public class Compiler {
 		System.out.println('\t' + "Lexer time: " + (System.currentTimeMillis() - start) + "ms" + '\n');
 		System.out.println('\t' + pragram + '\n');
 		tokens.stream().forEach(Compiler::printToken);
+		
+		System.out.println("--------------------");
+		
+		List<Expression> expressions = new Parser(tokens).parse();
+		expressions.stream().forEach(e->System.out.println(e + " " + e.eval()));
 	}
+	
 	private static void printToken(Token token) {
 		System.out.println(token.toString());
 	}

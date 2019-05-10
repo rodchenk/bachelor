@@ -21,6 +21,10 @@ public class Token {
 		this.tok_val = value;
 	}
 	
+	public Token(TokenType type) {
+		this(type, "empty");
+	}
+	
 	/**
 	 * @return TokenType {@link TokenType}
 	 */
@@ -38,5 +42,9 @@ public class Token {
 	@Override
 	public String toString() {
 		return String.format("%s %c -----with value-----%c (%s)", this.tok_type, '\t', '\t', this.tok_val);
+	}
+	
+	public boolean hasType(TokenType token) {
+		return token.equals(token);
 	}
 }

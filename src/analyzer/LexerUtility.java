@@ -7,8 +7,13 @@ import java.util.regex.Pattern;
 
 public class LexerUtility {
 
-	static final String LPT = "(", RPT = ")", LCB = "{", RCB = "}", LSB = "[", RSB = "]";
-	final static List<String> OPERATORS = Arrays.asList("+", "-", "*", "/");
+	static final String LPT = "(", RPT = ")", 
+						LCB = "{", RCB = "}", 
+						LSB = "[", RSB = "]",
+						PLUS = "+", MINUS = "-", 
+						STAR = "*", SLASH = "/";
+	
+	final static List<String> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH);
 	final static List<String> BRACKETS = Arrays.asList(LPT, RPT, LSB, RCB, LSB, RSB);
 
 	static TokenType getLexemeType(String lex) {
@@ -16,9 +21,17 @@ public class LexerUtility {
 		
 		if(isID(lexeme)) 		return TokenType.ID;
 		if(isDigit(lexeme)) 	return TokenType.NUMBER;
-		if(isOperator(lexeme)) 	return TokenType.OPER;
 		if(isEOL(lexeme)) 		return TokenType.EOL;
 		if(isString(lexeme))	return TokenType.TEXT;
+		if(isOperator(lexeme)) {
+			switch (lexeme) {
+				case PLUS: return TokenType.PLUS;
+				case MINUS: return TokenType.MINUS;
+				case STAR: return TokenType.STAR;
+				case SLASH: return TokenType.SLASH;
+			}
+			return TokenType.OPER;
+		}
 		if(isBracket(lexeme)) {
 			switch (lexeme) {
 				case LPT: return TokenType.LPT;

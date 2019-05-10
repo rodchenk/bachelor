@@ -44,7 +44,9 @@ public class Lexer {
 			sb = new StringBuilder();
 			do {
 				current_char_to_string = String.valueOf(next());
-
+			/*
+				if(LexerUtility.isDigit(current_char_to_string)) tokenizeDigit();
+			*/
 				if(current_char_to_string.equals(EMPTY)) 
 					continue;
 				
@@ -54,7 +56,9 @@ public class Lexer {
 				}
 				
 				sb.append(current_char_to_string);
-				should_take_next = hasNext() && !LexerUtility.isBracket(current_char_to_string) &&
+				should_take_next = hasNext() && 
+						!LexerUtility.isBracket(current_char_to_string) && 
+						!LexerUtility.isOperator(current_char_to_string) &&
 						LexerUtility.isSameType(String.valueOf(context.charAt(position)), current_char_to_string);
 			}while(should_take_next);
 

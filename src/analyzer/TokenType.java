@@ -3,6 +3,11 @@ package analyzer;
 public enum TokenType {
 	EOL, // ;
 	OPER, // +-*/
+	STAR,
+	PLUS,
+	MINUS,
+	SLASH,
+	
 	NUMBER, // [0-9] // TODO floating number
 	ID, //internal or externak key words
 	
