@@ -43,8 +43,4 @@ public class Token {
 	public String toString() {
 		return String.format("%s %c -----with value-----%c (%s)", this.tok_type, '\t', '\t', this.tok_val);
 	}
-	
-	public boolean hasType(TokenType token) {
-		return token.equals(token);
-	}
 }

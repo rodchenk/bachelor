@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.List;
 
 import analyzer.Lexer;
+import analyzer.Parser;
 import analyzer.Token;
 import analyzer.TokenType;
 import analyzer.ast.BinaryExpression;
 import analyzer.ast.Expression;
 import analyzer.ast.NumberExpression;
-import analyzer.ast.Parser;
 
 public class Compiler {
 
@@ -30,7 +30,7 @@ public class Compiler {
 		System.out.println("--------------------");
 		
 		List<Expression> expressions = new Parser(tokens).parse();
-		expressions.stream().forEach(e->System.out.println(e + " " + e.eval()));
+		expressions.stream().forEach(e->System.out.println(e + " = " + e.eval()));
 	}
 	
 	private static void printToken(Token token) {

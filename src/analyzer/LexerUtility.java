@@ -88,4 +88,10 @@ public class LexerUtility {
 			return false;
 		return type.equals(getLexemeType(next_character));
 	}
+	
+	static String remove_comments_and_spaces(String context) {
+		return context.replaceAll("#[^\\n\\r]+", ""). //one line comments with #
+				replaceAll("\\/\\*[\\s\\S]*?\\*\\/", "").//multiline comments with /**/
+				replaceFirst("\\s+(?=([^\"]*\"[^\"]*\")*[^\"]*$)", "");//all whitespaces that are not in quotes
+	}
 }

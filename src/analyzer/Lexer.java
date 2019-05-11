@@ -11,20 +11,19 @@ import java.util.List;
  */
 public class Lexer {
 
-	private static final Object EMPTY = " ";
 	String context;
 	int position, context_length;
 	List<Token> tok_list;
 	boolean quotes_opened = false;
 	
 	public Lexer(String context) {
-		this.context = context;
+		this.context = LexerUtility.remove_comments_and_spaces(context);
 		this.tok_list = new ArrayList<>();
-		this.position = 0;
-		this.context_length = context.length();
+		context_length = this.context.length();
 	}
-	
+
 	public List<Token> tokenize() {
+		
 		
 		List<String> lexemes = this.getLexemes();
 		
@@ -44,11 +43,6 @@ public class Lexer {
 			sb = new StringBuilder();
 			do {
 				current_char_to_string = String.valueOf(next());
-			/*
-				if(LexerUtility.isDigit(current_char_to_string)) tokenizeDigit();
-			*/
-				if(current_char_to_string.equals(EMPTY)) 
-					continue;
 				
 				while(quotes_opened) {
 					sb.append(current_char_to_string);
@@ -62,9 +56,7 @@ public class Lexer {
 						LexerUtility.isSameType(String.valueOf(context.charAt(position)), current_char_to_string);
 			}while(should_take_next);
 
-			String lex_val = sb.toString();
-			if(!lex_val.isEmpty())
-				lexemes.add(lex_val);
+			lexemes.add(sb.toString());
 		}
 		return lexemes;
 	}

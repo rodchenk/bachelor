@@ -23,4 +23,9 @@ public class UnaryExpression implements Expression{
 				return exp1.eval();
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s %s", operator, exp1.toString());
+	}
 }
