@@ -25,6 +25,7 @@ public class LexerUtility {
 		if(isDigit(lexeme)) 	return TokenType.NUMBER;
 		if(isEOL(lexeme)) 		return TokenType.EOL;
 		if(isString(lexeme))	return TokenType.TEXT;
+		if(isAlloc(lexeme))		return TokenType.ALLOC;
 		if(isOperator(lexeme)) {
 			switch (lexeme) {
 				case PLUS: return TokenType.PLUS;
@@ -61,7 +62,7 @@ public class LexerUtility {
 	}
 	
 	static boolean isID(String current) {
-		return isThatTypeByRegEx("[a-zA-Z]+", current);
+		return isThatTypeByRegEx("[a-zA-Z_]+", current);
 	}
 	
 	public static boolean isBracket(String current) {
@@ -76,6 +77,10 @@ public class LexerUtility {
 	
 	static boolean isWhiteSpace(String current) {
 		return isThatTypeByRegEx("\\s", current);
+	}
+	
+	static boolean isAlloc(String current) {
+		return current.equals("=");
 	}
 	
 	static boolean isThatTypeByRegEx(String regEx, String current) {

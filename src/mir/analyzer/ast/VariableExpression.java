@@ -13,6 +13,12 @@ public class VariableExpression implements Expression{
 		expression_value = Variable.getVariable(this.name);
 	}
 
+	public VariableExpression(Token current_token, NumberExpression numberExpression) {
+		this.name = current_token.getValue();
+		this.expression_value = numberExpression.eval();
+		Variable.setVariable(name, numberExpression);
+	}
+
 	@Override
 	public double eval() {
 		return expression_value;
@@ -20,6 +26,6 @@ public class VariableExpression implements Expression{
 
 	@Override
 	public String toString() {
-		return String.format("%s(%d)", name, (long)(expression_value));
+		return String.format("%s", name);
 	}
 }

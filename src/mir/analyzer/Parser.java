@@ -8,6 +8,7 @@ import mir.analyzer.ast.Expression;
 import mir.analyzer.ast.NumberExpression;
 import mir.analyzer.ast.UnaryExpression;
 import mir.analyzer.ast.VariableExpression;
+import mir.lib.Variable;
 
 import static mir.analyzer.TokenType.*;
 
@@ -93,6 +94,15 @@ public class Parser {
             return result;
 	    }
 	    if(this.is(ID)) {
+	    	while(true) {
+	    		if(this.is(ALLOC)) {
+	    			final Token alloc_value = getTokenByRelativePosition(0);
+	    			if(this.is(NUMBER)) {
+	    				return new VariableExpression(current_token, new NumberExpression(alloc_value));
+	    			}
+	    		}
+	    		break;
+	    	}
 	    	return new VariableExpression(current_token); 
 	    }
 
