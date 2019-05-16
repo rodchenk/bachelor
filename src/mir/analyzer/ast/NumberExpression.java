@@ -1,6 +1,6 @@
-package analyzer.ast;
+package mir.analyzer.ast;
 
-import analyzer.Token;
+import mir.analyzer.Token;
 
 public class NumberExpression implements Expression{
 

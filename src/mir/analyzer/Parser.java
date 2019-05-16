@@ -1,14 +1,15 @@
-package analyzer;
+package mir.analyzer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import analyzer.ast.BinaryExpression;
-import analyzer.ast.Expression;
-import analyzer.ast.NumberExpression;
-import analyzer.ast.UnaryExpression;
+import mir.analyzer.ast.BinaryExpression;
+import mir.analyzer.ast.Expression;
+import mir.analyzer.ast.NumberExpression;
+import mir.analyzer.ast.UnaryExpression;
+import mir.analyzer.ast.VariableExpression;
 
-import static analyzer.TokenType.*;
+import static mir.analyzer.TokenType.*;
 
 public class Parser {
 	
@@ -85,6 +86,14 @@ public class Parser {
 		final Token current_token = getTokenByRelativePosition(0);
 	    if (this.is(NUMBER)) {
 	    	return new NumberExpression(current_token);
+	    }
+	    if(this.is(LPT)) {
+	    	Expression result = expression();
+            this.is(RPT);
+            return result;
+	    }
+	    if(this.is(ID)) {
+	    	return new VariableExpression(current_token); 
 	    }
 
 	    throw new RuntimeException("Unknown expression");

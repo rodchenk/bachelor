@@ -1,4 +1,4 @@
-package analyzer;
+package mir.analyzer;
 
 /**
  * @author M.Rodchenkov

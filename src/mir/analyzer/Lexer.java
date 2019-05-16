@@ -1,7 +1,9 @@
-package analyzer;
+package mir.analyzer;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static mir.utility.LexerUtility.*;
 
 /**
  * 
@@ -17,7 +19,7 @@ public class Lexer {
 	boolean quotes_opened = false;
 	
 	public Lexer(String context) {
-		this.context = LexerUtility.remove_comments_and_spaces(context);
+		this.context = remove_comments_and_spaces(context);
 		this.tok_list = new ArrayList<>();
 		context_length = this.context.length();
 	}
@@ -28,7 +30,7 @@ public class Lexer {
 		List<String> lexemes = this.getLexemes();
 		
 		for(String lexeme: lexemes) {
-			tok_list.add(new Token(LexerUtility.getLexemeType(lexeme), lexeme));
+			tok_list.add(new Token(getLexemeType(lexeme), lexeme));
 		}
 		return tok_list;
 	}
@@ -51,9 +53,9 @@ public class Lexer {
 				
 				sb.append(current_char_to_string);
 				should_take_next = hasNext() && 
-						!LexerUtility.isBracket(current_char_to_string) && 
-						!LexerUtility.isOperator(current_char_to_string) &&
-						LexerUtility.isSameType(String.valueOf(context.charAt(position)), current_char_to_string);
+						!isBracket(current_char_to_string) && 
+						!isOperator(current_char_to_string) &&
+						isSameType(String.valueOf(context.charAt(position)), current_char_to_string);
 			}while(should_take_next);
 
 			lexemes.add(sb.toString());

@@ -1,9 +1,11 @@
-package analyzer;
+package mir.utility;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import mir.analyzer.TokenType;
 
 public class LexerUtility {
 
@@ -16,7 +18,7 @@ public class LexerUtility {
 	final static List<String> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH);
 	final static List<String> BRACKETS = Arrays.asList(LPT, RPT, LSB, RCB, LSB, RSB);
 
-	static TokenType getLexemeType(String lex) {
+	public static TokenType getLexemeType(String lex) {
 		String lexeme = lex.trim();
 		
 		if(isID(lexeme)) 		return TokenType.ID;
@@ -62,11 +64,11 @@ public class LexerUtility {
 		return isThatTypeByRegEx("[a-zA-Z]+", current);
 	}
 	
-	static boolean isBracket(String current) {
+	public static boolean isBracket(String current) {
 		return BRACKETS.contains(current);
 	}
 	
-	static boolean isOperator(String current) {
+	public static boolean isOperator(String current) {
 		if(current.length() == 1) 
 			return OPERATORS.contains(current);
 		return isThatTypeByRegEx("\\*\\/\\+\\-", current);
@@ -82,16 +84,17 @@ public class LexerUtility {
 		return m.matches();
 	}
 
-	protected static boolean isSameType(String current_character, String next_character) {
+	public static boolean isSameType(String current_character, String next_character) {
 		TokenType type = getLexemeType(current_character);
 		if(type.equals(TokenType.BRACKET)) 
 			return false;
 		return type.equals(getLexemeType(next_character));
 	}
 	
-	static String remove_comments_and_spaces(String context) {
+	public static String remove_comments_and_spaces(String context) {
 		return context.replaceAll("#[^\\n\\r]+", ""). //one line comments with #
-				replaceAll("\\/\\*[\\s\\S]*?\\*\\/", "").//multiline comments with /**/
-				replaceFirst("\\s+(?=([^\"]*\"[^\"]*\")*[^\"]*$)", "");//all whitespaces that are not in quotes
+				replaceAll("\\/\\*[\\s\\S]*?\\*\\/", "").//multiline comments with /* COMMENT */
+				replaceAll("\\n|\\t", ""). // 
+				replaceAll("\\s+(?=([^\"]*\"[^\"]*\")*[^\"]*$)", "");//all whitespaces that are not in quotes
 	}
 }

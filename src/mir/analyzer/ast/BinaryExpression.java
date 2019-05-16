@@ -1,6 +1,6 @@
-package analyzer.ast;
+package mir.analyzer.ast;
 
-import analyzer.TokenType;
+import mir.analyzer.TokenType;
 
 public class BinaryExpression implements Expression{
 	

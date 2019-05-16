@@ -1,16 +1,8 @@
-2+*//100; 
-#print ("hello world")
+2 * -var;
+1 / 2;
 
-# two plus 
-/*
-sdf*/
+# one line comment
 
-# dsf
-#j
-sdf sdf
-# sdfs sdf 23
-# 23 
-# !
 /*
-sdfsdf
+	multi lines comment
 */

@@ -1,4 +1,5 @@
-package compiler;
+package mir;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,30 +7,29 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import analyzer.Lexer;
-import analyzer.Parser;
-import analyzer.Token;
-import analyzer.TokenType;
-import analyzer.ast.BinaryExpression;
-import analyzer.ast.Expression;
-import analyzer.ast.NumberExpression;
+import mir.analyzer.Lexer;
+import mir.analyzer.Parser;
+import mir.analyzer.Token;
+import mir.analyzer.ast.Expression;
+import mir.utility.TimeMeasurement;
 
 public class Compiler {
 
 	private static final String SAMPLE_PATH = "sample/first.mir";
 	
 	public static void main(String[] args) {
-		File sample = new File(SAMPLE_PATH);
-		String pragram = Compiler.readFile(sample);
-		long start = System.currentTimeMillis();
+		String pragram = Compiler.readFile(new File(SAMPLE_PATH));
+		
+		TimeMeasurement.setMeasurement("Lexer");
 		List<Token> tokens = new Lexer(pragram).tokenize();
-		System.out.println('\t' + "Lexer time: " + (System.currentTimeMillis() - start) + "ms" + '\n');
-		System.out.println('\t' + pragram + '\n');
+		System.out.println('\t' + "Lexer time: " + TimeMeasurement.getResult("Lexer") + "ms" + '\n');
 		tokens.stream().forEach(Compiler::printToken);
 		
 		System.out.println("--------------------");
 		
+		TimeMeasurement.setMeasurement("Parser");
 		List<Expression> expressions = new Parser(tokens).parse();
+		System.out.println('\t' + "Parser time: " + TimeMeasurement.getResult("Parser") + "ms" + '\n');
 		expressions.stream().forEach(e->System.out.println(e + " = " + e.eval()));
 	}
 	
@@ -44,11 +44,12 @@ public class Compiler {
 		try {
 			br = new BufferedReader(new FileReader(sample));
 			while ((st = br.readLine()) != null) {
-				sb.append(st);
+				sb.append(st+'\n');
 			}
 		} catch (IOException | NullPointerException e) {
 			e.printStackTrace();
 		}
+		System.out.println(sb.toString() + '\n');
 		return sb.toString();
 	}
 
