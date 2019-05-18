@@ -10,6 +10,6 @@ public class PrintStatement implements Statement{
 	
 	@Override
 	public void execute() {
-		System.out.println(this.expression.eval().asString());
+		System.out.print(this.expression.eval().asString());
 	}
 }

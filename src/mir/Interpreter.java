@@ -12,15 +12,13 @@ import mir.analyzer.Token;
 import mir.analyzer.ast.Statement;
 import mir.utility.TimeMeasurement;
 
-public class Compiler {
+public class Interpreter {
 
 	private static final String SAMPLE_PATH = "sample/first.mir";
 	
-	public static void main(String[] args) throws IOException {
-		String pragram = new String(Files.readAllBytes(Paths.get(SAMPLE_PATH)), "UTF-8");
-		
+	private static void run(String program) {
 		TimeMeasurement.setMeasurement("Lexer");
-		List<Token> tokens = new Lexer(pragram).tokenize();
+		List<Token> tokens = new Lexer(program).tokenize();
 		System.out.println('\t' + "Lexer time: " + TimeMeasurement.getResult("Lexer") + "ms" + '\n');
 		tokens.stream().forEach(System.out::println);
 		
@@ -31,6 +29,11 @@ public class Compiler {
 		System.out.println('\t' + "Parser time: " + TimeMeasurement.getResult("Parser") + "ms" + '\n');
 		
 		statements.stream().forEach(Statement::execute);
+	}
+	
+	public static void main(String[] args) throws IOException {
+		String program = new String(Files.readAllBytes(Paths.get(SAMPLE_PATH)), "UTF-8");
+		Interpreter.run(program);
 	}
 	
 }
