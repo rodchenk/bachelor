@@ -11,6 +11,7 @@ import mir.analyzer.Lexer;
 import mir.analyzer.Parser;
 import mir.analyzer.Token;
 import mir.analyzer.ast.Expression;
+import mir.analyzer.ast.Statement;
 import mir.utility.TimeMeasurement;
 
 public class Compiler {
@@ -28,9 +29,14 @@ public class Compiler {
 		System.out.println("--------------------");
 		
 		TimeMeasurement.setMeasurement("Parser");
-		List<Expression> expressions = new Parser(tokens).parse();
+		List<Statement> statements = new Parser(tokens).parse();
 		System.out.println('\t' + "Parser time: " + TimeMeasurement.getResult("Parser") + "ms" + '\n');
-		expressions.stream().forEach(e->System.out.println(e + " = " + e.eval()));
+		
+		statements.stream().forEach(e->{
+			System.out.println(e); 
+			e.execute();
+			}
+		);
 	}
 	
 	private static void printToken(Token token) {

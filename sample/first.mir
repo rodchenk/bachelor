@@ -1,7 +1,7 @@
 x = 10;
-y = 15;
-x * y;
-
+y = 5;
+x = x * 2;
+z = y + x;
 # one line comment
 
 /*

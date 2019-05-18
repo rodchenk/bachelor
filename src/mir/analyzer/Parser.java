@@ -3,12 +3,15 @@ package mir.analyzer;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
+import mir.analyzer.ast.AllocStatement;
 import mir.analyzer.ast.BinaryExpression;
 import mir.analyzer.ast.Expression;
 import mir.analyzer.ast.NumberExpression;
+import mir.analyzer.ast.Statement;
 import mir.analyzer.ast.UnaryExpression;
 import mir.analyzer.ast.VariableExpression;
-import mir.lib.Variable;
 
 import static mir.analyzer.TokenType.*;
 
@@ -23,16 +26,28 @@ public class Parser {
 		size = tokens.size();
 	}
 	
-	public List<Expression> parse() {
-		List<Expression> expressions = new ArrayList<>();
+	public List<Statement> parse() {
+		List<Statement> statements = new ArrayList<>();
 		
 		while(hasNext()) {
-			expressions.add(expression());
+			statements.add(statement());
 		}
 
-		return expressions;
+		return statements;
 	}
 	
+	private Statement statement() {
+		return allocStatement();
+	}
+	
+	private Statement allocStatement() {
+		final Token current_token = this.getTokenByRelativePosition(0);
+		if(this.is(ID) && this.is(ALLOC)) {	
+			return new AllocStatement(current_token.getValue(), expression());
+		}
+		throw new RuntimeException("Unknown statement");
+	}
+
 	private Expression expression() {
 		return add();
 	}
@@ -93,20 +108,18 @@ public class Parser {
             this.is(RPT);
             return result;
 	    }
-	    if(this.is(ID)) {
-	    	while(true) {
-	    		if(this.is(ALLOC)) {
-	    			final Token alloc_value = getTokenByRelativePosition(0);
-	    			if(this.is(NUMBER)) {
-	    				return new VariableExpression(current_token, new NumberExpression(alloc_value));
-	    			}
-	    		}
-	    		break;
-	    	}
-	    	return new VariableExpression(current_token); 
-	    }
 
-	    throw new RuntimeException("Unknown expression");
+	    return variable();
+	}
+	
+	private Expression variable() {
+		final Token current_token = getTokenByRelativePosition(0);
+		
+		if(this.is(ID)) {
+			return new VariableExpression(current_token);
+		}
+		
+		throw new RuntimeException("Unknown expression");
 	}
 	
 	private Token getTokenByRelativePosition(int add_position) {
