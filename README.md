@@ -11,6 +11,7 @@ z = y + x;
 ### Print statement:
 ```
 print(z + 2);
+print("Hello world");
 ```
 
 ### One line and multiline comments:
