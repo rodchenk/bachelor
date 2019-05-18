@@ -15,7 +15,7 @@ print(z + 2);
 
 ### One line and multiline comments:
 ```
-\# one line comment
+# one line comment
 
 /*
 multi lines 
