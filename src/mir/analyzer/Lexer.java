@@ -2,6 +2,7 @@ package mir.analyzer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static mir.utility.LexerUtility.*;
 
@@ -25,13 +26,16 @@ public class Lexer {
 	}
 
 	public List<Token> tokenize() {
-		
-		
 		List<String> lexemes = this.getLexemes();
 		
 		for(String lexeme: lexemes) {
 			tok_list.add(new Token(getLexemeType(lexeme), lexeme));
 		}
+		
+		tok_list.stream() // TODO -> hier werden die Klammer bei String geloescht. Muss etwas effektives finden
+			.filter(e->e.getType().equals(TokenType.TEXT))
+			.forEach(e->e.setValue(e.getValue().substring(1, e.getValue().length() - 1)));
+		
 		return tok_list;
 	}
 	

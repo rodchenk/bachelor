@@ -25,6 +25,10 @@ public class Token {
 		this(type, "empty");
 	}
 	
+	public void setValue(String value) {
+		this.tok_val = value;
+	}
+	
 	/**
 	 * @return TokenType {@link TokenType}
 	 */
