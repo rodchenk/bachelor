@@ -18,6 +18,7 @@ print(z + 2);
 \# one line comment
 
 /*
-	multi lines comment
+multi lines 
+comment
 */
 ```
