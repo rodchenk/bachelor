@@ -11,6 +11,8 @@ public enum TokenType {
 	
 	ALLOC, // =
 	
+	PRINT,
+	
 	ONC, // one line comment with #
 	
 	NUMBER, // [0-9] // TODO floating number

@@ -9,6 +9,7 @@ import mir.analyzer.ast.AllocStatement;
 import mir.analyzer.ast.BinaryExpression;
 import mir.analyzer.ast.Expression;
 import mir.analyzer.ast.NumberExpression;
+import mir.analyzer.ast.PrintStatement;
 import mir.analyzer.ast.Statement;
 import mir.analyzer.ast.UnaryExpression;
 import mir.analyzer.ast.VariableExpression;
@@ -37,6 +38,9 @@ public class Parser {
 	}
 	
 	private Statement statement() {
+		if(this.is(PRINT)) {
+			return new PrintStatement(expression());
+		}
 		return allocStatement();
 	}
 	

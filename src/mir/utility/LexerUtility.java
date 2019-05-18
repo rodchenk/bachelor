@@ -13,10 +13,13 @@ public class LexerUtility {
 						LCB = "{", RCB = "}", 
 						LSB = "[", RSB = "]",
 						PLUS = "+", MINUS = "-", 
-						STAR = "*", SLASH = "/";
+						STAR = "*", SLASH = "/",
+						PRINT = "print";
 	
 	final static List<String> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH);
 	final static List<String> BRACKETS = Arrays.asList(LPT, RPT, LSB, RCB, LSB, RSB);
+	
+	final static List<String> KEY_WORDS = Arrays.asList(PRINT);
 
 	public static TokenType getLexemeType(String lex) {
 		String lexeme = lex.trim();
@@ -26,6 +29,11 @@ public class LexerUtility {
 		if(isEOL(lexeme)) 		return TokenType.EOL;
 		if(isString(lexeme))	return TokenType.TEXT;
 		if(isAlloc(lexeme))		return TokenType.ALLOC;
+		if(isKeyword(lexeme)) {
+			switch(lexeme) {
+				case PRINT: return TokenType.PRINT;
+			}
+		}
 		if(isOperator(lexeme)) {
 			switch (lexeme) {
 				case PLUS: return TokenType.PLUS;
@@ -62,9 +70,14 @@ public class LexerUtility {
 	}
 	
 	static boolean isID(String current) {
+		if(isKeyword(current)) return false;
 		return isThatTypeByRegEx("[a-zA-Z_]+", current);
 	}
 	
+	private static boolean isKeyword(String current) {
+		return KEY_WORDS.indexOf(current) != -1;
+	}
+
 	public static boolean isBracket(String current) {
 		return BRACKETS.contains(current);
 	}
