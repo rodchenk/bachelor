@@ -8,11 +8,12 @@ import javax.management.RuntimeErrorException;
 import mir.analyzer.ast.AllocStatement;
 import mir.analyzer.ast.BinaryExpression;
 import mir.analyzer.ast.Expression;
-import mir.analyzer.ast.NumberExpression;
+import mir.analyzer.ast.ValueExpression;
 import mir.analyzer.ast.PrintStatement;
 import mir.analyzer.ast.Statement;
 import mir.analyzer.ast.UnaryExpression;
 import mir.analyzer.ast.VariableExpression;
+import mir.lib.StringValue;
 
 import static mir.analyzer.TokenType.*;
 
@@ -41,6 +42,7 @@ public class Parser {
 		if(this.is(PRINT)) {
 			return new PrintStatement(expression());
 		}
+		
 		return allocStatement();
 	}
 	
@@ -49,7 +51,8 @@ public class Parser {
 		if(this.is(ID) && this.is(ALLOC)) {	
 			return new AllocStatement(current_token.getValue(), expression());
 		}
-		throw new RuntimeException("Unknown statement");
+		
+		throw new RuntimeException("Unknown statement:" + current_token.getValue());
 	}
 
 	private Expression expression() {
@@ -104,9 +107,16 @@ public class Parser {
 	
 	private Expression primary() {
 		final Token current_token = getTokenByRelativePosition(0);
-	    if (this.is(NUMBER)) {
-	    	return new NumberExpression(current_token);
+	    final String token_value = current_token.getValue();
+	    
+		if (this.is(NUMBER)) {
+	    	return new ValueExpression(token_value);
 	    }
+
+	    if(this.is(TEXT)) {
+	    	return new ValueExpression(token_value);
+	    }
+	    
 	    if(this.is(LPT)) {
 	    	Expression result = expression();
             this.is(RPT);

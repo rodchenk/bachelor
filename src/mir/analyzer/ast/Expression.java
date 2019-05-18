@@ -1,7 +1,9 @@
 package mir.analyzer.ast;
 
+import mir.lib.Value;
+
 public interface Expression {
-	double eval();
 	
-	public String toString();
+	Value eval();
+	
 }

@@ -1,6 +1,8 @@
 package mir.analyzer.ast;
 
 import mir.analyzer.TokenType;
+import mir.lib.NumberValue;
+import mir.lib.Value;
 
 public class UnaryExpression implements Expression{
 
@@ -13,11 +15,12 @@ public class UnaryExpression implements Expression{
 	}
 	
 	@Override
-	public double eval() {
+	public Value eval() {
+		double value = exp1.eval().asDouble();
 		switch (operator) {
-			case MINUS: return -exp1.eval();
-			case STAR: 	return Math.pow(exp1.eval(), 2);
-			case SLASH: return Math.pow(exp1.eval(), 0.5);
+			case MINUS: return new NumberValue(-value);
+			case STAR: 	return new NumberValue(Math.pow(value, 2));
+			case SLASH: return new NumberValue(Math.pow(value, 0.5));
 			case PLUS:
 			default: 
 				return exp1.eval();

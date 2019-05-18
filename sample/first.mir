@@ -2,7 +2,8 @@ x = 10;
 y = 5;
 x = x * 2;
 z = y + x;
-print(z + 2);
+print("z + 2");
+print(z - 2);
 
 # one line comment
 

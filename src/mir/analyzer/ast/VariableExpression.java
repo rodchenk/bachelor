@@ -1,6 +1,7 @@
 package mir.analyzer.ast;
 
 import mir.analyzer.Token;
+import mir.lib.Value;
 import mir.lib.Variable;
 
 public class VariableExpression implements Expression{
@@ -12,7 +13,7 @@ public class VariableExpression implements Expression{
 	}
 
 	@Override
-	public double eval() {
+	public Value eval() {
 		return Variable.getVariable(name);
 	}
 

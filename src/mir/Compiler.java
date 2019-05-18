@@ -1,7 +1,6 @@
 package mir;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,7 +22,7 @@ public class Compiler {
 		TimeMeasurement.setMeasurement("Lexer");
 		List<Token> tokens = new Lexer(pragram).tokenize();
 		System.out.println('\t' + "Lexer time: " + TimeMeasurement.getResult("Lexer") + "ms" + '\n');
-		tokens.stream().forEach(Compiler::printToken);
+		tokens.stream().forEach(System.out::println);
 		
 		System.out.println("----------------------------------------");
 		
@@ -32,10 +31,6 @@ public class Compiler {
 		System.out.println('\t' + "Parser time: " + TimeMeasurement.getResult("Parser") + "ms" + '\n');
 		
 		statements.stream().forEach(Statement::execute);
-	}
-	
-	private static void printToken(Token token) {
-		System.out.println(token.toString());
 	}
 	
 }

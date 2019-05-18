@@ -7,9 +7,9 @@ import mir.analyzer.ast.Expression;
 
 public class Variable {
 
-	static Map<String, Double> map = new HashMap<>();
+	static Map<String, Value> map = new HashMap<>();
 
-	public static double getVariable(String name) {
+	public static Value getVariable(String name) {
 		try {
 			return map.get(name);
 		}catch(NullPointerException e) {
