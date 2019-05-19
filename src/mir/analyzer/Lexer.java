@@ -3,11 +3,6 @@ package mir.analyzer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import mir.utility.LexerUtility;
-
-import static mir.utility.LexerUtility.*;
 
 /**
  * 
@@ -17,12 +12,12 @@ import static mir.utility.LexerUtility.*;
  */
 public class Lexer {
 
-	String context;
-	int position, context_length;
-	List<Token> tok_list;
-	boolean quotes_opened = false;
+	private final String context;
+	private final int context_length;
+	private int position;
+	private boolean quotes_opened = false;
 	
-	final private String PRINT = "print", IF = "if", ELSE = "else", FOR = "for";
+	private final String PRINT = "print", IF = "if", ELSE = "else", FOR = "for";
 	private final char LPT = '(', RPT = ')', LCB = '{', RCB = '}', LSB = '[', RSB = ']', 
 			EOL = ';', ALLOC = '=', PLUS = '+', MINUS = '-', 	STAR = '*', SLASH = '/',  GT = '>', LT = '<';
 	
@@ -34,7 +29,6 @@ public class Lexer {
 	
 	public Lexer(String context) {
 		this.context = remove_comments_and_spaces(context);
-		this.tok_list = new ArrayList<>();
 		context_length = this.context.length();
 	}
 
@@ -53,8 +47,12 @@ public class Lexer {
 				lexemes.add(tokenizeNumber(next));
 				continue;
 			}
-			if(Character.isLetter(next) || quotes_opened) {
+			if(Character.isLetter(next)) {
 				lexemes.add(tokenizeID(next));
+				continue;
+			}
+			if(quotes_opened) {
+				lexemes.add(tokenizeText());
 				continue;
 			}
 			if(OPERATORS.contains(next)) {
@@ -69,6 +67,7 @@ public class Lexer {
 				lexemes.add(new Token(TokenType.EOL));
 				continue;
 			}
+			if(next == ' ' || next == '\n' || next == '\t') continue;
 			throw new RuntimeException("Unknown lexeme: " + next);
 		}
 		return lexemes;
@@ -121,14 +120,10 @@ public class Lexer {
 	}
 	
 	private Token tokenizeID(char next) {
-		//TODO string like \"
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		char current = next;
-		if(quotes_opened) { // parse String, e.g "Hello"
-			return tokenizeText();
-		}
 		
-		while(hasNext() && (Character.isAlphabetic(current) )) { // build words
+		while(hasNext() && (Character.isAlphabetic(current) )) {
 			sb.append(current);
 			current = next();
 		}
@@ -136,41 +131,58 @@ public class Lexer {
 		prev();
 		String token_value = sb.toString();
 		
-		if(KEY_WORDS.contains(token_value)) {
-			switch(token_value) {
-				case PRINT: return new Token(TokenType.PRINT);
-				case IF: return new Token(TokenType.IF);
-				case ELSE: return new Token(TokenType.ELSE);
-				case FOR: return new Token(TokenType.FOR);
-			}
-		}
+		if(KEY_WORDS.contains(token_value))
+			return tokenizeKeyword(token_value);
+
 		return new Token(TokenType.ID, token_value);
 	}
 
 	
+	private Token tokenizeKeyword(String token_value) {
+		switch(token_value) {
+			case PRINT: return new Token(TokenType.PRINT);
+			case IF: 	return new Token(TokenType.IF);
+			case ELSE: 	return new Token(TokenType.ELSE);
+			case FOR: 	return new Token(TokenType.FOR);
+		}
+		throw new RuntimeException("Unknown keyword " + token_value);
+	}
+
 	private Token tokenizeText() {
-		StringBuilder sb = new StringBuilder();
-		char current = next(); // skip opened and closed "
-		while(quotes_opened) {
-			if(current == '\\') {
+		final StringBuilder sb = new StringBuilder();
+		char current = next(); // skip open quote
+		while(true) {
+			if(current == 92) {
 				current = next();
 				switch(current) {
-					case 'n': {
-						current = next();
-						sb.append('\n');
-						continue;
-					}
-					case 't': {
-						current = next();
-						sb.append('\t');
-						continue;
-					}
+					case 34:  current = next(); sb.append('\"'); continue; // quote
+					case 110: current = next(); sb.append('\n'); continue; // new line
+					case 116: current = next();	sb.append('\t'); continue; // tabulator
 				}
 			}
+			
+			if(current == 34) { // closed quote
+				quotes_opened = false;
+				break;
+			}
+			
 			sb.append(current);
 			current = next();
 		}
 		return new Token(TokenType.TEXT, sb.toString());
+	}
+	
+	/**
+	 * 
+	 * @param String Program context
+	 * @return String context without comments, whitespaces and new lines
+	 */
+	private static String remove_comments_and_spaces(String context) {
+		return context.replaceAll("#[^\\n\\r]+", ""). //one line comments with #
+				replaceAll("\\/\\*[\\s\\S]*?\\*\\/", "").//multiline comments with /* COMMENT */
+				replaceAll("\\n|\\t", "").
+				//replaceAll("/((\\r\\n|\\n|\\r)$)|(^(\\r\\n|\\n|\\r))|^\\s*$/gm", " "); // 
+				replaceAll("\\s+(?=([^\"]*\"[^\"]*\")*[^\"]*$)", " ");//all whitespaces that are not in quotes
 	}
 
 	/**
@@ -181,15 +193,19 @@ public class Lexer {
 	}
 	
 	/**
-	 * @return next character of context and increment it by one
+	 * @return next character of context and increase it by one
 	 */
 	private char next() {
 		char next = context.charAt(position++);
 		if(next == '"') 
-			quotes_opened = !quotes_opened;
+			quotes_opened = true;
 		return next;
 	}
 	
+	/**
+	 * @return void
+	 * @param decrease current context position by 1
+	 */
 	private void prev() {
 		position-=1;
 	}

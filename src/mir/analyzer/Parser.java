@@ -3,17 +3,15 @@ package mir.analyzer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import mir.analyzer.ast.AllocStatement;
 import mir.analyzer.ast.BinaryExpression;
+import mir.analyzer.ast.ConditionalExpression;
 import mir.analyzer.ast.Expression;
 import mir.analyzer.ast.ValueExpression;
 import mir.analyzer.ast.PrintStatement;
 import mir.analyzer.ast.Statement;
 import mir.analyzer.ast.UnaryExpression;
 import mir.analyzer.ast.VariableExpression;
-import mir.lib.StringValue;
 
 import static mir.analyzer.TokenType.*;
 
@@ -42,7 +40,10 @@ public class Parser {
 		if(this.is(PRINT)) {
 			return new PrintStatement(expression());
 		}
-		
+//		if(this.is(IF)) {
+//			return new IfStatement(expression());
+//		}
+//		
 		return allocStatement();
 	}
 	
@@ -52,18 +53,32 @@ public class Parser {
 			return new AllocStatement(current_token.getValue(), expression());
 		}
 		
-		throw new RuntimeException("Unknown statement:" + current_token.getValue());
+		throw new RuntimeException("Unknown statement:" + current_token.getType() + " " + current_token.getValue());
 	}
 
 	private Expression expression() {
-		return add();
+		return condition();
+	}
+	
+	private Expression condition() {
+		Expression e = add();
+		while(!this.is(EOL)) {
+			if(is(LT)) {
+				e = new ConditionalExpression(LT, e, add());
+				continue;
+			}
+			if(is(GT)) {
+				e = new ConditionalExpression(GT, e, add());
+				continue;
+			}
+			break;
+		}
+		return e;
 	}
 	
 	private Expression add() {
 		Expression e = multiply();
-		Token token;
 		while(!this.is(EOL)) {
-			token = getTokenByRelativePosition(0);
 			if(is(PLUS)) {
 				e = new BinaryExpression(PLUS, e, multiply());
 				continue;
@@ -79,9 +94,7 @@ public class Parser {
 	
 	private Expression multiply() {
 		Expression e = unary();
-		Token token;
 		while(!this.is(EOL)) {
-			token = getTokenByRelativePosition(0);
 			if(this.is(STAR)) {
 				e = new BinaryExpression(STAR, e, multiply());
 				continue;
@@ -139,9 +152,13 @@ public class Parser {
 		int pos = this.position + add_position;
 		if(hasTokenAt(pos))
 			return tokens.get(pos);
-		return new Token(TokenType.EOL);//TODO EOF
+		return new Token(TokenType.EOL);
 	}
 	
+	/**
+	 * @param type {@link TokenType} 
+	 * @return boolean, true if given type equels to current (position will be increased), otherwise false
+	 */
 	private boolean is(TokenType type) {
 		Token token = this.getTokenByRelativePosition(0);
 		if(!token.getType().equals(type)) 
@@ -150,10 +167,17 @@ public class Parser {
 		return true;
 	}
 	
+	/**
+	 * @return boolean true if there is next character in program content, otherwise false
+	 */
 	private boolean hasNext() {
 		return position < size;
 	}
 	
+	/**
+	 * @param i some char point of program context
+	 * @return true if there is character at position <b>i</b> in program content, otherwise false
+	 */
 	private boolean hasTokenAt(int i) {
 		return i < size;
 	}

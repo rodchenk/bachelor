@@ -1,7 +1,8 @@
 x = -10;
 var = "hello world";
-print("abc" + (x + 1) + " " + "2")
-print( "\n" + var)
+print("abc " + (x + 1) + " " + " -> 2");
+print("\n" + var + "\n");
+print(1 > 2);
 
 # one line comment
 

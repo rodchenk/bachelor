@@ -30,11 +30,11 @@ public class BinaryExpression implements Expression{
 				case SLASH: return new NumberValue(value_1 / value_2);
 				case STAR: 	return new NumberValue(value_1 * value_2);
 				default: 
-					throw new RuntimeException("Unknown expression");
+					throw new RuntimeException("Unknown operator (" + operator + ") for binary Number expression");
 			}
 		}
 		if(!operator.equals(TokenType.PLUS)) 
-			throw new RuntimeException("Unknown operator (" + operator + ") for String concat.");
+			throw new RuntimeException("Unknown operator (" + operator + ") for binary String concatenation");
 		
 		return new StringValue(left.asString() + right.asString()); // concat
 	}
