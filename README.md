@@ -16,7 +16,7 @@ print(str_var + "!\n"); // Hello World!
 print(10 < 12); // 0 (false)
 ```
 
-### One line and multiline comments:
+### One and multiline comments:
 ```
 # one line comment
 
