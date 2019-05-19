@@ -1,9 +1,7 @@
-x = 10;
-y = 5;
-x = x * 2;
-z = y + x;
-print("z + 2 = ");
-print(z - 2);
+x = -10;
+var = "hello world";
+print("abc" + (x + 1) + " " + "2")
+print( "\n" + var)
 
 # one line comment
 

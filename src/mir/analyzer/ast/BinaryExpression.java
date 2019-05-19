@@ -2,6 +2,7 @@ package mir.analyzer.ast;
 
 import mir.analyzer.TokenType;
 import mir.lib.NumberValue;
+import mir.lib.StringValue;
 import mir.lib.Value;
 
 public class BinaryExpression implements Expression{
@@ -17,16 +18,23 @@ public class BinaryExpression implements Expression{
 	
 	@Override
 	public Value eval() {
-		final double value_1 = exp1.eval().asDouble();
-		final double value_2 = exp2.eval().asDouble();
-		switch (operator) {
-			case PLUS: 	return new NumberValue(value_1 + value_2);
-			case MINUS: return new NumberValue(value_1 - value_2);
-			case SLASH: return new NumberValue(value_1 / value_2);
-			case STAR: 	return new NumberValue(value_1 * value_2);
-			default: 
-				throw new RuntimeException("Unknown expression");
+		final Value left = exp1.eval();
+		final Value right = exp2.eval();
+		
+		if(left instanceof NumberValue && right instanceof NumberValue) {
+			final double value_1 = left.asDouble();
+			final double value_2 = right.asDouble();
+			switch (operator) {
+				case PLUS: 	return new NumberValue(value_1 + value_2);
+				case MINUS: return new NumberValue(value_1 - value_2);
+				case SLASH: return new NumberValue(value_1 / value_2);
+				case STAR: 	return new NumberValue(value_1 * value_2);
+				default: 
+					throw new RuntimeException("Unknown expression");
+			}
 		}
+		
+		return new StringValue(left.asString() + right.asString()); // concat
 	}
 	
 	@Override

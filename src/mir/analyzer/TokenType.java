@@ -11,7 +11,8 @@ public enum TokenType {
 	
 	ALLOC, // =
 	
-	PRINT,
+	PRINT, IF, ELSE, FOR,
+	GT, LT, /// <>
 	
 	ONC, // one line comment with #
 	

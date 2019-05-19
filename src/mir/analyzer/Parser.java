@@ -48,7 +48,7 @@ public class Parser {
 	
 	private Statement allocStatement() {
 		final Token current_token = this.getTokenByRelativePosition(0);
-		if(this.is(ID) && this.is(ALLOC)) {	
+		if(this.is(ID) && this.is(ALLOC)) {	// x = ...
 			return new AllocStatement(current_token.getValue(), expression());
 		}
 		
@@ -106,11 +106,10 @@ public class Parser {
 	}
 	
 	private Expression primary() {
-		final Token current_token = getTokenByRelativePosition(0);
-	    final String token_value = current_token.getValue();
+	    final String token_value = getTokenByRelativePosition(0).getValue();
 	    
 		if (this.is(NUMBER)) {
-	    	return new ValueExpression(token_value);
+	    	return new ValueExpression(Double.parseDouble(token_value));
 	    }
 
 	    if(this.is(TEXT)) {

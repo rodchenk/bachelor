@@ -35,5 +35,4 @@ public class Interpreter {
 		String program = new String(Files.readAllBytes(Paths.get(SAMPLE_PATH)), "UTF-8");
 		Interpreter.run(program);
 	}
-	
 }
