@@ -33,6 +33,8 @@ public class BinaryExpression implements Expression{
 					throw new RuntimeException("Unknown expression");
 			}
 		}
+		if(!operator.equals(TokenType.PLUS)) 
+			throw new RuntimeException("Unknown operator (" + operator + ") for String concat.");
 		
 		return new StringValue(left.asString() + right.asString()); // concat
 	}
