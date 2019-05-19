@@ -11,8 +11,9 @@ str_var = "Hello World";
 
 ### Print statement:
 ```
-print(z + 2 + "\n");
-print(str_var + "!");
+print(z + 2 + "\n"); // 27
+print(str_var + "!\n"); // Hello World!
+print(10 < 12); // 0 (false)
 ```
 
 ### One line and multiline comments:
