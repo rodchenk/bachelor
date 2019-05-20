@@ -62,14 +62,30 @@ public class Parser {
 	
 	private Expression condition() {
 		Expression e = add();
-		while(!this.is(EOL)) {
-			if(is(LT)) {
-				e = new ConditionalExpression(LT, e, add());
-				continue;
+		while(!is(EOL)) {
+			if(is(LT)) {	
+				e = new ConditionalExpression(LT, e, add()); 	
+				continue; 
 			}
-			if(is(GT)) {
-				e = new ConditionalExpression(GT, e, add());
-				continue;
+			if(is(GT)) {	
+				e = new ConditionalExpression(GT, e, add()); 
+				continue; 
+			}
+			if(is(GTEQ)) {	
+				e = new ConditionalExpression(GTEQ, e, add()); 	
+				continue; 
+			}
+			if(is(LTEQ)) {	
+				e = new ConditionalExpression(LTEQ, e, add()); 	
+				continue; 
+			}
+			if(is(EQ)) {	
+				e = new ConditionalExpression(EQ, e, add()); 	
+				continue; 
+			}
+			if(is(NOTEQ)) { 
+				e = new ConditionalExpression(NOTEQ, e, add()); 
+				continue; 
 			}
 			break;
 		}
@@ -119,17 +135,21 @@ public class Parser {
 	}
 	
 	private Expression primary() {
-	    final String token_value = getTokenByRelativePosition(0).getValue();
+	    Token tokenByRelativePosition = getTokenByRelativePosition(0);
+		final String token_value = tokenByRelativePosition.getValue();
 	    
-		if (this.is(NUMBER)) {
+		if (is(NUMBER)) {
 	    	return new ValueExpression(Double.parseDouble(token_value));
 	    }
 
-	    if(this.is(TEXT)) {
+	    if(is(TEXT)) {
 	    	return new ValueExpression(token_value);
 	    }
+	    if(is(TRUE) || is(FALSE)) { // TODO
+	    	return new ValueExpression(tokenByRelativePosition.getType().toString().toLowerCase());
+	    }
 	    
-	    if(this.is(LPT)) {
+	    if(is(LPT)) {
 	    	Expression result = expression();
             this.is(RPT);
             return result;
@@ -145,7 +165,7 @@ public class Parser {
 			return new VariableExpression(current_token);
 		}
 		
-		throw new RuntimeException("Unknown expression");
+		throw new RuntimeException("Unknown expression " + current_token.getType());
 	}
 	
 	private Token getTokenByRelativePosition(int add_position) {

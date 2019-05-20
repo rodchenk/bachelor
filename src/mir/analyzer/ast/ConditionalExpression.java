@@ -1,8 +1,8 @@
 package mir.analyzer.ast;
 
 import mir.analyzer.TokenType;
+import mir.lib.BooleanValue;
 import mir.lib.NumberValue;
-import mir.lib.StringValue;
 import mir.lib.Value;
 
 public class ConditionalExpression implements Expression{
@@ -25,14 +25,25 @@ public class ConditionalExpression implements Expression{
 			final double value_1 = left.asDouble();
 			final double value_2 = right.asDouble();
 			switch (operator) {
-				case GT: return new NumberValue(value_1 > value_2 ? 1 : 0); // 1 true, 0 false
-				case LT: return new NumberValue(value_1 < value_2 ? 1 : 0);
+				case GT: return new BooleanValue(value_1 > value_2);
+				case LT: return new BooleanValue(value_1 < value_2);
+				case EQ: return new BooleanValue(value_1 == value_2);
+				case LTEQ: return new BooleanValue(value_1 <= value_2);
+				case GTEQ: return new BooleanValue(value_1 >= value_2);
+				case NOTEQ:return new BooleanValue(value_1 != value_2);
 				default: 
-					throw new RuntimeException("Unknown operator (" + operator + ") for binary Number expression");
+					throw new RuntimeException("Unknown operator (" + operator + ") for binary conditional expression");
 			}
 		}
-
-		return new StringValue(left.asString() + right.asString()); // concat
+		final String value_1 = left.asString();
+		final String value_2 = right.asString();
+		// string compare
+		switch (operator) {
+			case EQ: return new BooleanValue(value_1.equals(value_2)); // equels or hashCode ?
+			case NOTEQ: return new BooleanValue(!value_1.equals(value_2)); // TODO compareTo()
+			default:
+				throw new RuntimeException("Unable to parse conditional expression with operator (" + operator + ")");
+		}		
 	}
 	
 	@Override

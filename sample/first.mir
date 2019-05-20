@@ -1,8 +1,11 @@
 x = -10;
-var = "hello world";
+var = "Hello"
+/* var = "hello world";
+var2 = "hello world"; */
 print("abc " + (x + 1) + " " + " -> 2");
 print("\n" + var + "\n");
-print(1 > 2);
+print((1 + 1 > 1 * 2) + "\n");
+print(true == false);
 
 # one line comment
 

@@ -17,14 +17,15 @@ public class Lexer {
 	private int position;
 	private boolean quotes_opened = false;
 	
-	private final String PRINT = "print", IF = "if", ELSE = "else", FOR = "for";
-	private final char LPT = '(', RPT = ')', LCB = '{', RCB = '}', LSB = '[', RSB = ']', 
+	private final String TRUE = "true", FALSE = "false", PRINT = "print", IF = "if", ELSE = "else", FOR = "for", EQ = "==", GTEQ = ">=", LTEQ = "<=", NOTEQ = "!=";
+	private final char LPT = '(', RPT = ')', LCB = '{', RCB = '}', LSB = '[', RSB = ']', NEG = '!',
 			EOL = ';', ALLOC = '=', PLUS = '+', MINUS = '-', 	STAR = '*', SLASH = '/',  GT = '>', LT = '<';
 	
 	private final List<Character> BRACKETS = Arrays.asList(LPT, RPT, LSB, RCB, LSB, RSB);
-	private final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT);
+	private final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG);
 	
-	private final List<String> KEY_WORDS = Arrays.asList(PRINT, IF, ELSE, FOR);
+	private final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);
+	private final List<String> KEY_WORDS = Arrays.asList(PRINT, IF, ELSE, FOR, TRUE, FALSE);
 
 	
 	public Lexer(String context) {
@@ -67,7 +68,7 @@ public class Lexer {
 				lexemes.add(new Token(TokenType.EOL));
 				continue;
 			}
-			if(next == ' ' || next == '\n' || next == '\t') continue;
+			if(next == ' ' || next == '\n' || next == '\t') continue; // skip whitespaces
 			throw new RuntimeException("Unknown lexeme: " + next);
 		}
 		return lexemes;
@@ -86,26 +87,34 @@ public class Lexer {
 	}
 
 	private Token tokenizeOperator(char next) {
-		StringBuilder sb = new StringBuilder();
 		char current = next;
-		if(current == ALLOC) 
-			return new Token(TokenType.ALLOC);
+		char following = next(); 
 		
-//		while(hasNext() && isOperator(current)) { // parse multi operators like >=, ++, +=, >= and so on
-//			sb.append(current);
-//			current = next();
-//		}
-//		prev(); // go one char back
-		
-		switch(next) {
-			case(PLUS): return new Token(TokenType.PLUS);
-			case(MINUS):return new Token(TokenType.MINUS);
-			case(STAR): return new Token(TokenType.STAR);
-			case(SLASH):return new Token(TokenType.SLASH);
-			case(GT): 	return new Token(TokenType.GT);
-			case(LT): 	return new Token(TokenType.LT);
+		// ==, <=, >=
+		if(OPERATORS.contains(following)) {
+			String dual = (String)(current + "" + following);
+			if(DUAL_OPERATORS.contains(dual)) {
+				switch(dual) {
+					case EQ: 	return new Token(TokenType.EQ);
+					case LTEQ: 	return new Token(TokenType.LTEQ);
+					case GTEQ: 	return new Token(TokenType.GTEQ);
+					case NOTEQ: return new Token(TokenType.NOTEQ);
+				}
+			}
 		}
-		throw new RuntimeException("Unknown operator: (" + sb.toString() + ")");
+		prev();
+
+		switch(next) {
+			case ALLOC: return new Token(TokenType.ALLOC);
+			case PLUS: 	return new Token(TokenType.PLUS);
+			case MINUS:	return new Token(TokenType.MINUS);
+			case STAR: 	return new Token(TokenType.STAR);
+			case SLASH:	return new Token(TokenType.SLASH);
+			case GT: 	return new Token(TokenType.GT);
+			case LT: 	return new Token(TokenType.LT);
+		}
+		
+		throw new RuntimeException("Unknown operator: (" + next + ")");
 	}
 	
 	private Token tokenizeNumber(char next) {
@@ -144,6 +153,8 @@ public class Lexer {
 			case IF: 	return new Token(TokenType.IF);
 			case ELSE: 	return new Token(TokenType.ELSE);
 			case FOR: 	return new Token(TokenType.FOR);
+			case TRUE:	return new Token(TokenType.TRUE);
+			case FALSE: return new Token(TokenType.FALSE);
 		}
 		throw new RuntimeException("Unknown keyword " + token_value);
 	}
