@@ -7,6 +7,7 @@ y = 5;
 x = x * 2;
 z = y + x;
 str_var = "Hello World";
+bol_var = false;
 ```
 
 ### Print statement:
