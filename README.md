@@ -11,7 +11,7 @@ str_var = "Hello World";
 
 ### Print statement:
 ```
-print(z + 2 + "\n"); // 27
+print(z + 2); // 27
 print(str_var + "!\n"); // Hello World!
 print(10 < 12); // true
 print(true == false); //false
@@ -22,8 +22,6 @@ print((1 + 1 >= 1 * 2) + "\n"); //true
 ```
 # one line comment
 
-/*
-multi lines 
-comment
-*/
+/* multi lines 
+comment */
 ```
