@@ -10,6 +10,15 @@ str_var = "Hello World";
 bol_var = false;
 ```
 
+### Conditional statement:
+```
+if( 1 > 2 ){
+  print("1 > 2");
+}else{
+  print("otherwise");
+}
+```
+
 ### Print statement:
 ```
 print(z + 2); // 27
