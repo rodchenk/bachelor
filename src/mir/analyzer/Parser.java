@@ -6,6 +6,7 @@ import java.util.List;
 import mir.analyzer.ast.AllocStatement;
 import mir.analyzer.ast.BinaryExpression;
 import mir.analyzer.ast.ConditionalExpression;
+import mir.analyzer.ast.ConditionalStatement;
 import mir.analyzer.ast.Expression;
 import mir.analyzer.ast.ValueExpression;
 import mir.analyzer.ast.PrintStatement;
@@ -37,21 +38,28 @@ public class Parser {
 	}
 	
 	private Statement statement() {
+		final Token current_token = this.getTokenByRelativePosition(0);
+		
 		if(this.is(PRINT)) {
 			return new PrintStatement(expression());
 		}
-//		if(this.is(IF)) {
-//			return new IfStatement(expression());
-//		}
-//		
-		return allocStatement();
-	}
-	
-	private Statement allocStatement() {
-		final Token current_token = this.getTokenByRelativePosition(0);
+		
+		if(this.is(IF)) {
+			final Expression condition = condition();
+			final Statement _if = statement(), 
+							_else = this.is(ELSE) ? statement() : null;
+			return new ConditionalStatement(condition, _if, _else);
+		}
+		
 		if(this.is(ID) && this.is(ALLOC)) {	// x = ...
 			return new AllocStatement(current_token.getValue(), expression());
 		}
+
+	    if(is(LCB) ) {
+	    	Statement result = statement();
+            this.is(RCB);
+            return result;
+	    }
 		
 		throw new RuntimeException("Unknown statement:" + current_token.getType() + " " + current_token.getValue());
 	}
@@ -154,7 +162,7 @@ public class Parser {
             this.is(RPT);
             return result;
 	    }
-
+	    
 	    return variable();
 	}
 	

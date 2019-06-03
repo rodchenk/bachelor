@@ -21,7 +21,7 @@ public class Lexer {
 	private final char LPT = '(', RPT = ')', LCB = '{', RCB = '}', LSB = '[', RSB = ']', NEG = '!',
 			EOL = ';', ALLOC = '=', PLUS = '+', MINUS = '-', 	STAR = '*', SLASH = '/',  GT = '>', LT = '<';
 	
-	private final List<Character> BRACKETS = Arrays.asList(LPT, RPT, LSB, RCB, LSB, RSB);
+	private final List<Character> BRACKETS = Arrays.asList(LPT, RPT, LCB, RCB, LSB, RSB);
 	private final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG);
 	
 	private final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);

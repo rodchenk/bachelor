@@ -4,6 +4,9 @@ public class BooleanValue implements Value{
 
 	private final boolean value;
 	
+	public static final BooleanValue TRUE = new BooleanValue(1);
+	public static final BooleanValue FALSE = new BooleanValue(0);
+	
 	public BooleanValue(boolean value) {
 		this.value = value;
 	}

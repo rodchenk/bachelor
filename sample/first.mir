@@ -1,15 +1,8 @@
-x = -10;
-var = "Hello"
-/* var = "hello world";
-var2 = "hello world"; */
-print("abc " + (x + 1) + " " + " -> 2");
-print("\n" + var + "\n");
-print((1 + 1 > 1 * 2) + "\n");
-print(true == false);
+var = 10;
 
-# one line comment
+if(var < 1)
+	var = var + 10;
+else 
+	print("Hello there, i am in if\n");
 
-/*
-multi line 
-comment
-*/
+print(var);
