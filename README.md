@@ -12,10 +12,12 @@ bol_var = false;
 
 ### Conditional statement:
 ```
-if( 1 > 2 ){
-  print("1 > 2");
-}else{
-  print("otherwise");
+cond = true
+while cond{
+  if cond == false
+    print("Deadlock")
+  else
+    cond = false
 }
 ```
 
