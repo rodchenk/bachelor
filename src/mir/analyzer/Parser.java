@@ -8,6 +8,7 @@ import mir.analyzer.ast.BinaryExpression;
 import mir.analyzer.ast.ConditionalExpression;
 import mir.analyzer.ast.ConditionalStatement;
 import mir.analyzer.ast.Expression;
+import mir.analyzer.ast.Iteratiiontatement;
 import mir.analyzer.ast.ValueExpression;
 import mir.analyzer.ast.PrintStatement;
 import mir.analyzer.ast.Statement;
@@ -46,23 +47,23 @@ public class Parser {
 		
 		if(this.is(IF)) {
 			final Expression condition = condition();
-			final Statement _if = statement(), 
-							_else = this.is(ELSE) ? statement() : null;
+			final List<Statement> _if = getInheritedStatements(), 
+								_else = this.is(ELSE) ? getInheritedStatements() : null;
 			return new ConditionalStatement(condition, _if, _else);
+		}
+		
+		if(this.is(WHILE)) {
+			final Expression condition = condition();
+			final List<Statement> _while = getInheritedStatements();
+			return new Iteratiiontatement(condition, _while);
 		}
 		
 		if(this.is(ID) && this.is(ALLOC)) {	// x = ...
 			return new AllocStatement(current_token.getValue(), expression());
 		}
-
-	    if(is(LCB) ) {
-	    	Statement result = statement();
-            this.is(RCB);
-            return result;
-	    }
 		
 		throw new RuntimeException("Unknown statement:" + current_token.getType() + " " + current_token.getValue());
-	}
+	}	
 
 	private Expression expression() {
 		return condition();
@@ -181,6 +182,20 @@ public class Parser {
 		if(hasTokenAt(pos))
 			return tokens.get(pos);
 		return new Token(TokenType.EOL);
+	}
+	
+	/**
+	 * Gibt eine Liste von Statements zurueck. Z.B. fuer if(){...statements...}else{...statements...}
+	 * @return List<Statement> 
+	 */
+	private List<Statement> getInheritedStatements() {
+		List<Statement> statements = new ArrayList<>();
+		if(this.is(LCB)) {
+			while(!this.is(RCB)) statements.add(statement());
+		}else {
+			statements.add(statement());
+		}
+		return statements;
 	}
 	
 	/**
