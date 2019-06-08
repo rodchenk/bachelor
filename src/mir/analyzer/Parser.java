@@ -1,12 +1,13 @@
 package mir.analyzer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import mir.analyzer.ast.AllocStatement;
 import mir.analyzer.ast.BinaryExpression;
+import mir.analyzer.ast.BlockStatement;
 import mir.analyzer.ast.ConditionalExpression;
 import mir.analyzer.ast.ConditionalStatement;
+import mir.analyzer.ast.EndStatement;
 import mir.analyzer.ast.Expression;
 import mir.analyzer.ast.Iteratiiontatement;
 import mir.analyzer.ast.ValueExpression;
@@ -28,8 +29,8 @@ public class Parser {
 		size = tokens.size();
 	}
 	
-	public List<Statement> parse() {
-		List<Statement> statements = new ArrayList<>();
+	public Statement parse() {
+		BlockStatement statements = new BlockStatement();
 		
 		while(hasNext()) {
 			statements.add(statement());
@@ -46,15 +47,15 @@ public class Parser {
 		}
 		
 		if(this.is(IF)) {
-			final Expression condition = condition();
-			final List<Statement> _if = getInheritedStatements(), 
+			final Expression condition = or();
+			final Statement _if = getInheritedStatements(), 
 								_else = this.is(ELSE) ? getInheritedStatements() : null;
 			return new ConditionalStatement(condition, _if, _else);
 		}
 		
 		if(this.is(WHILE)) {
-			final Expression condition = condition();
-			final List<Statement> _while = getInheritedStatements();
+			final Expression condition = or();
+			final Statement _while = getInheritedStatements();
 			return new Iteratiiontatement(condition, _while);
 		}
 		
@@ -62,11 +63,31 @@ public class Parser {
 			return new AllocStatement(current_token.getValue(), expression());
 		}
 		
+		if(this.is(END)) {
+			return new EndStatement();
+		}
+		
 		throw new RuntimeException("Unknown statement:" + current_token.getType() + " " + current_token.getValue());
 	}	
 
 	private Expression expression() {
-		return condition();
+		return or();
+	}
+	
+	private Expression or() {
+		Expression expression = and();
+		if(this.is(OR)) {
+			return new ConditionalExpression(OR, expression, and());
+		}
+		return expression;
+	}
+	
+	private Expression and() {
+		Expression expression = condition();
+		if(this.is(AND)) {
+			return new ConditionalExpression(AND, expression, condition());
+		}
+		return expression;
 	}
 	
 	private Expression condition() {
@@ -128,6 +149,10 @@ public class Parser {
 				e = new BinaryExpression(SLASH, e, multiply());
 				continue;
 			}
+			if(is(MODULO)) {
+				e = new BinaryExpression(MODULO, e, multiply());
+				continue;
+			}
 			break;
 		}
 		return e;
@@ -185,17 +210,18 @@ public class Parser {
 	}
 	
 	/**
-	 * Gibt eine Liste von Statements zurueck. Z.B. fuer if(){...statements...}else{...statements...}
+	 * Gibt einen Block von Statements zurueck. Z.B. fuer if(){...statements...}else{...statements...}
 	 * @return List<Statement> 
 	 */
-	private List<Statement> getInheritedStatements() {
-		List<Statement> statements = new ArrayList<>();
+	private Statement getInheritedStatements() {
+		final BlockStatement block = new BlockStatement();
 		if(this.is(LCB)) {
-			while(!this.is(RCB)) statements.add(statement());
+			while(!this.is(RCB)) 
+				block.add(statement());
 		}else {
-			statements.add(statement());
+			block.add(statement());
 		}
-		return statements;
+		return block;
 	}
 	
 	/**

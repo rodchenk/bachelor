@@ -10,24 +10,49 @@ import java.util.List;
  * @category Lexer Klasse. Prueft alle Zeichen im Program Context und weist die TokenTypes zu;
  * Nach der Instanzierung muss die Methode tokenize() aufgerufen.
  */
-public class Lexer {
+public class Lexer{
 
 	private final String context;
 	private final int context_length;
 	private int position;
 	private boolean quotes_opened = false;
-	
-	private final String TRUE = "true", FALSE = "false", PRINT = "print", IF = "if", ELSE = "else", FOR = "for", WHILE = "while", EQ = "==", GTEQ = ">=", LTEQ = "<=", NOTEQ = "!=";
-	private final char LPT = '(', RPT = ')', LCB = '{', RCB = '}', LSB = '[', RSB = ']', NEG = '!',
-			EOL = ';', ALLOC = '=', PLUS = '+', MINUS = '-', 	STAR = '*', SLASH = '/',  GT = '>', LT = '<';
-	
-	private final List<Character> BRACKETS = Arrays.asList(LPT, RPT, LCB, RCB, LSB, RSB);
-	private final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG);
-	
-	private final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);
-	private final List<String> KEY_WORDS = Arrays.asList(PRINT, IF, ELSE, FOR, WHILE, TRUE, FALSE);
+	private final String TRUE = "true", 
+						 FALSE = "false", 
+						 PRINT = "print", 
+						 IF = "if", 
+						 ELSE = "else", 
+						 FOR = "for", 
+						 WHILE = "while", 
+						 END="end", 
+						 EQ = "==", 
+						 GTEQ = ">=", 
+						 LTEQ = "<=", 
+						 NOTEQ = "!=",
+						 AND = "and",
+						 OR = "or";
+	private final char   LPT = '(', 
+						 RPT = ')', 
+						 LCB = '{', 
+						 RCB = '}', 
+						 LSB = '[', 
+						 RSB = ']', 
+						 NEG = '!',
+						 EOL = ';', 
+						 ALLOC = '=', 
+						 PLUS = '+', 
+						 MINUS = '-', 
+						 STAR = '*', 
+						 SLASH = '/',
+						 MODULO = '%',
+						 GT = '>', 
+						 LT = '<';
 
-	
+	private final List<Character> BRACKETS = Arrays.asList(LPT, RPT, LCB, RCB, LSB, RSB);
+	final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG, MODULO);
+
+	final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);
+	final List<String> KEY_WORDS = Arrays.asList(PRINT, IF, ELSE, FOR, WHILE, END, TRUE, FALSE, AND, OR);
+
 	public Lexer(String context) {
 		this.context = remove_comments_and_spaces(context);
 		context_length = this.context.length();
@@ -110,6 +135,7 @@ public class Lexer {
 			case MINUS:	return new Token(TokenType.MINUS);
 			case STAR: 	return new Token(TokenType.STAR);
 			case SLASH:	return new Token(TokenType.SLASH);
+			case MODULO:return new Token(TokenType.MODULO);
 			case GT: 	return new Token(TokenType.GT);
 			case LT: 	return new Token(TokenType.LT);
 		}
@@ -152,10 +178,13 @@ public class Lexer {
 			case PRINT: return new Token(TokenType.PRINT);
 			case IF: 	return new Token(TokenType.IF);
 			case WHILE: return new Token(TokenType.WHILE);
+			case END: 	return new Token(TokenType.END);
 			case ELSE: 	return new Token(TokenType.ELSE);
 			case FOR: 	return new Token(TokenType.FOR);
 			case TRUE:	return new Token(TokenType.TRUE);
 			case FALSE: return new Token(TokenType.FALSE);
+			case AND: 	return new Token(TokenType.AND);
+			case OR: 	return new Token(TokenType.OR);
 		}
 		throw new RuntimeException("Unknown keyword " + token_value);
 	}

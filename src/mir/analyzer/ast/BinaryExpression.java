@@ -29,6 +29,7 @@ public class BinaryExpression implements Expression{
 				case MINUS: return new NumberValue(value_1 - value_2);
 				case SLASH: return new NumberValue(value_1 / value_2);
 				case STAR: 	return new NumberValue(value_1 * value_2);
+				case MODULO:return new NumberValue(value_1 % value_2);
 				default: 
 					throw new RuntimeException("Unknown operator (" + operator + ") for binary Number expression");
 			}

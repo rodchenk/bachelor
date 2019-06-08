@@ -25,12 +25,12 @@ public class ConditionalExpression implements Expression{
 			final double value_1 = left.asDouble();
 			final double value_2 = right.asDouble();
 			switch (operator) {
-				case GT: return new BooleanValue(value_1 > value_2);
-				case LT: return new BooleanValue(value_1 < value_2);
-				case EQ: return new BooleanValue(value_1 == value_2);
-				case LTEQ: return new BooleanValue(value_1 <= value_2);
-				case GTEQ: return new BooleanValue(value_1 >= value_2);
-				case NOTEQ:return new BooleanValue(value_1 != value_2);
+				case GT: 	return new BooleanValue(value_1 > value_2);
+				case LT: 	return new BooleanValue(value_1 < value_2);
+				case EQ: 	return new BooleanValue(value_1 == value_2);
+				case LTEQ: 	return new BooleanValue(value_1 <= value_2);
+				case GTEQ: 	return new BooleanValue(value_1 >= value_2);
+				case NOTEQ:	return new BooleanValue(value_1 != value_2);
 				default: 
 					throw new RuntimeException("Unknown operator (" + operator + ") for binary conditional expression");
 			}
@@ -41,6 +41,8 @@ public class ConditionalExpression implements Expression{
 		switch (operator) {
 			case EQ: return new BooleanValue(value_1.equals(value_2)); // equels or hashCode ?
 			case NOTEQ: return new BooleanValue(!value_1.equals(value_2)); // TODO compareTo()
+			case AND: 	return new BooleanValue(Boolean.valueOf(value_1) && Boolean.valueOf(value_2));
+			case OR: 	return new BooleanValue(Boolean.valueOf(value_1) || Boolean.valueOf(value_2));
 			default:
 				throw new RuntimeException("Unable to parse conditional expression with operator (" + operator + ")");
 		}		

@@ -3,6 +3,6 @@ index = 0;
 while cond == true {
 	index = index + 1;
 	print index + "\n";
-	if index > 2 
-		cond = false
+	if index > 5 or index % 4 == 0
+		end
 }

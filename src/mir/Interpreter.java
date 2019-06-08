@@ -25,10 +25,10 @@ public class Interpreter {
 		System.out.println("----------------------------------------");
 		
 		TimeMeasurement.setMeasurement("Parser");
-		List<Statement> statements = new Parser(tokens).parse();
+		Statement source = new Parser(tokens).parse();
 		System.out.println('\t' + "Parser time: " + TimeMeasurement.getResult("Parser") + "ms" + '\n');
 		
-		statements.stream().forEach(Statement::execute);
+		source.execute();
 	}
 	
 	public static void main(String[] args) throws IOException {
