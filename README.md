@@ -3,9 +3,6 @@
 ### Variable expression:
 ```
 x = 10;
-y = 5;
-x = x * 2;
-z = y + x;
 str_var = "Hello World";
 bol_var = false;
 ```
@@ -23,10 +20,7 @@ while cond{
 
 ### Print statement:
 ```
-print(z + 2); // 27
 print(str_var + "!\n"); // Hello World!
-print(10 < 12); // true
-print(true == false); //false
 print((1 + 1 >= 1 * 2) + "\n"); //true
 ```
 
