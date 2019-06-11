@@ -11,9 +11,9 @@ bol_var = false;
 ```
 cond = true
 while cond{
-  if cond == false and true
-    print("Deadlock")
-  else end
+	if cond == false and true
+    		print("Deadlock")
+  	else end
 }
 ```
 
