@@ -37,7 +37,8 @@ public class Lexer{
 						 LSB = '[', 
 						 RSB = ']', 
 						 NEG = '!',
-						 EOL = ';', 
+						 EOL = ';',
+						 COLON = ':',
 						 ALLOC = '=', 
 						 PLUS = '+', 
 						 MINUS = '-', 
@@ -48,7 +49,7 @@ public class Lexer{
 						 LT = '<';
 
 	private final List<Character> BRACKETS = Arrays.asList(LPT, RPT, LCB, RCB, LSB, RSB);
-	final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG, MODULO);
+	final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG, MODULO, COLON);
 
 	final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);
 	final List<String> KEY_WORDS = Arrays.asList(PRINT, IF, ELSE, FOR, WHILE, END, TRUE, FALSE, AND, OR);
@@ -138,6 +139,7 @@ public class Lexer{
 			case MODULO:return new Token(TokenType.MODULO);
 			case GT: 	return new Token(TokenType.GT);
 			case LT: 	return new Token(TokenType.LT);
+			case COLON: return new Token(TokenType.COLON);
 		}
 		
 		throw new RuntimeException("Unknown operator: (" + next + ")");

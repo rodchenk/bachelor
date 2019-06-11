@@ -9,6 +9,7 @@ import mir.analyzer.ast.ConditionalExpression;
 import mir.analyzer.ast.ConditionalStatement;
 import mir.analyzer.ast.EndStatement;
 import mir.analyzer.ast.Expression;
+import mir.analyzer.ast.ForStatement;
 import mir.analyzer.ast.Iteratiiontatement;
 import mir.analyzer.ast.ValueExpression;
 import mir.analyzer.ast.PrintStatement;
@@ -40,7 +41,7 @@ public class Parser {
 	}
 	
 	private Statement statement() {
-		final Token current_token = this.getTokenByRelativePosition(0);
+		Token current_token = this.getTokenByRelativePosition(0);
 		
 		if(this.is(PRINT)) {
 			return new PrintStatement(expression());
@@ -57,6 +58,22 @@ public class Parser {
 			final Expression condition = or();
 			final Statement _while = getInheritedStatements();
 			return new Iteratiiontatement(condition, _while);
+		}
+		
+		if(this.is(FOR)) {//TODO Refactoring
+			// for index = 0; index < 10; index = index + 1:
+			current_token = this.getTokenByRelativePosition(0);
+			is(ID);
+			is(ALLOC); //skip =
+			final AllocStatement instance =  new AllocStatement(current_token.getValue(), expression());
+			is(EOL);// skip ;
+			final Expression condition = or();
+			is(EOL);
+			is(ID);
+			is(ALLOC);
+			final AllocStatement increment = new AllocStatement(current_token.getValue(), expression());
+			final Statement _for = getInheritedStatements();
+			return new ForStatement(instance, condition, increment, _for);
 		}
 		
 		if(this.is(ID) && this.is(ALLOC)) {	// x = ...
@@ -215,8 +232,9 @@ public class Parser {
 	 */
 	private Statement getInheritedStatements() {
 		final BlockStatement block = new BlockStatement();
-		if(this.is(LCB)) {
-			while(!this.is(RCB)) 
+		is(COLON);
+		if(this.is(LSB)) {
+			while(!this.is(RSB)) 
 				block.add(statement());
 		}else {
 			block.add(statement());

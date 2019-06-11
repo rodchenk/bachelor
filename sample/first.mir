@@ -1,8 +1,16 @@
-cond = true;
-index = 0;
-while cond == true {
-	index = index + 1;
-	print index + "\n";
-	if index > 5 or index % 4 == 0
-		end
-}
+pn = 0
+nn = 1
+i = 1
+min = "-"
+while i <= 10:[
+	n = i
+	while n >= 0: [
+		print min
+		n = n - 1
+	]
+	print pn + "\n"
+	sum = pn + nn
+	pn = nn
+	nn = sum
+	i = i + 1
+]
