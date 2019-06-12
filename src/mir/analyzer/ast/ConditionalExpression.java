@@ -50,6 +50,13 @@ public class ConditionalExpression implements Expression{
 	
 	@Override
 	public String toString() {
-		return String.format("%s %s %s", left_expression.toString(), operator, right_expression.toString());
+		char op;
+		switch (operator) {
+		case LT: op = '<'; break;
+		case GT: op = '>'; break;
+		default:
+			op = '=';
+		}
+		return String.format("%s %s %s", left_expression.toString(), op, right_expression.toString());
 	}
 }

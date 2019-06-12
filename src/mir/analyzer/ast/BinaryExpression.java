@@ -36,12 +36,20 @@ public class BinaryExpression implements Expression{
 		}
 		if(!operator.equals(TokenType.PLUS)) 
 			throw new RuntimeException("Unknown operator (" + operator + ") for binary String concatenation");
-		
+
 		return new StringValue(left.asString() + right.asString()); // concat
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("%s %s %s", exp1.toString(), operator, exp2.toString());
+		char op;
+		switch (operator) {
+			case PLUS: 	op = '+';	break;
+			case MINUS: op = '-';	break;
+			case STAR: 	op = '*';	break;
+			case SLASH: op = '/';	break;
+			default: 	op = 'U'; 	break;
+		}
+		return String.format("%s %s %s", exp1.toString(), op, exp2.toString());
 	}
 }

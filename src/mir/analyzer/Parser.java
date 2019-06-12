@@ -1,5 +1,6 @@
 package mir.analyzer;
 
+import java.text.ParseException;
 import java.util.List;
 
 import mir.analyzer.ast.AllocStatement;
@@ -7,6 +8,7 @@ import mir.analyzer.ast.BinaryExpression;
 import mir.analyzer.ast.BlockStatement;
 import mir.analyzer.ast.ConditionalExpression;
 import mir.analyzer.ast.ConditionalStatement;
+import mir.analyzer.ast.ContinueStatement;
 import mir.analyzer.ast.EndStatement;
 import mir.analyzer.ast.Expression;
 import mir.analyzer.ast.ForStatement;
@@ -42,7 +44,7 @@ public class Parser {
 	
 	private Statement statement() {
 		Token current_token = this.getTokenByRelativePosition(0);
-		
+
 		if(this.is(PRINT)) {
 			return new PrintStatement(expression());
 		}
@@ -50,7 +52,7 @@ public class Parser {
 		if(this.is(IF)) {
 			final Expression condition = or();
 			final Statement _if = getInheritedStatements(), 
-								_else = this.is(ELSE) ? getInheritedStatements() : null;
+							_else = this.is(ELSE) ? getInheritedStatements() : null;
 			return new ConditionalStatement(condition, _if, _else);
 		}
 		
@@ -63,15 +65,13 @@ public class Parser {
 		if(this.is(FOR)) {//TODO Refactoring
 			// for index = 0; index < 10; index = index + 1:
 			current_token = this.getTokenByRelativePosition(0);
-			is(ID);
-			is(ALLOC); //skip =
-			final AllocStatement instance =  new AllocStatement(current_token.getValue(), expression());
-			is(EOL);// skip ;
+			consume(ID);
+			consume(ALLOC); //skip =
+			final Statement instance =  new AllocStatement(current_token.getValue(), expression());
 			final Expression condition = or();
-			is(EOL);
-			is(ID);
-			is(ALLOC);
-			final AllocStatement increment = new AllocStatement(current_token.getValue(), expression());
+			consume(ID);
+			consume(ALLOC);
+			final Statement increment = new AllocStatement(current_token.getValue(), expression());
 			final Statement _for = getInheritedStatements();
 			return new ForStatement(instance, condition, increment, _for);
 		}
@@ -82,6 +82,10 @@ public class Parser {
 		
 		if(this.is(END)) {
 			return new EndStatement();
+		}
+		
+		if(this.is(CONTINUE)) {
+			return new ContinueStatement();
 		}
 		
 		throw new RuntimeException("Unknown statement:" + current_token.getType() + " " + current_token.getValue());
@@ -253,6 +257,20 @@ public class Parser {
 		this.position++;
 		return true;
 	}
+	
+	/**
+	 * @throws RuntimeException when das erwartete Token nicht dem aktuellen entspricht
+	 * @param type {@link TokenType} das zu erwartende Token
+	 * @return {@link TokenType} das aktuelle Token
+	 */
+    private Token consume(TokenType type) {
+        final Token token = getTokenByRelativePosition(0);
+        if (!token.getType().equals(type)) {
+            throw new RuntimeException("Token " + token + " doesn't match " + type);
+        }
+        this.position++;
+        return token;
+    }
 	
 	/**
 	 * @return boolean true if there is next character in program content, otherwise false

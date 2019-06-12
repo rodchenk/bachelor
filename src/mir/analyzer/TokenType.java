@@ -5,7 +5,7 @@ public enum TokenType {
 	ALLOC, STAR, PLUS, MINUS, SLASH, MODULO, COLON,// operators
 	GT, LT, EQ, GTEQ, LTEQ, NOTEQ,/// conditions < > == >= <= !=
 	
-	TRUE, FALSE, PRINT, IF, ELSE, FOR, WHILE, END, AND, OR,// key words
+	TRUE, FALSE, PRINT, IF, ELSE, FOR, WHILE, END, AND, OR, CONTINUE,// key words
 	
 	TEXT, // ["*"]
 	NUMBER, // int und floating number

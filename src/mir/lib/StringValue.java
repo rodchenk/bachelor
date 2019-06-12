@@ -21,5 +21,10 @@ public class StringValue implements Value{
 			throw new RuntimeException("Cannot parse string " + value + " to double");
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return "hello from StringValue";
+	}
 
 }

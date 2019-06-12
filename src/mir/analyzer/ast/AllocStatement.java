@@ -19,6 +19,6 @@ public class AllocStatement implements Statement{
 	
 	@Override
 	public String toString() {
-		return String.format("%s -> %f", name, expression.eval());
+		return String.format("%s = %s", name, expression);
 	}
 }

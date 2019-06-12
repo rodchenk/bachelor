@@ -24,6 +24,7 @@ public class Lexer{
 						 FOR = "for", 
 						 WHILE = "while", 
 						 END="end", 
+						 CONTINUE = "continue",
 						 EQ = "==", 
 						 GTEQ = ">=", 
 						 LTEQ = "<=", 
@@ -52,7 +53,7 @@ public class Lexer{
 	final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG, MODULO, COLON);
 
 	final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);
-	final List<String> KEY_WORDS = Arrays.asList(PRINT, IF, ELSE, FOR, WHILE, END, TRUE, FALSE, AND, OR);
+	final List<String> KEY_WORDS = Arrays.asList(PRINT, IF, ELSE, FOR, WHILE, END, CONTINUE, TRUE, FALSE, AND, OR);
 
 	public Lexer(String context) {
 		this.context = remove_comments_and_spaces(context);
@@ -177,16 +178,17 @@ public class Lexer{
 	
 	private Token tokenizeKeyword(String token_value) {
 		switch(token_value) {
-			case PRINT: return new Token(TokenType.PRINT);
-			case IF: 	return new Token(TokenType.IF);
-			case WHILE: return new Token(TokenType.WHILE);
-			case END: 	return new Token(TokenType.END);
-			case ELSE: 	return new Token(TokenType.ELSE);
-			case FOR: 	return new Token(TokenType.FOR);
-			case TRUE:	return new Token(TokenType.TRUE);
-			case FALSE: return new Token(TokenType.FALSE);
-			case AND: 	return new Token(TokenType.AND);
-			case OR: 	return new Token(TokenType.OR);
+			case PRINT: 	return new Token(TokenType.PRINT);
+			case IF: 		return new Token(TokenType.IF);
+			case WHILE: 	return new Token(TokenType.WHILE);
+			case END: 		return new Token(TokenType.END);
+			case CONTINUE: 	return new Token(TokenType.CONTINUE);
+			case ELSE: 		return new Token(TokenType.ELSE);
+			case FOR: 		return new Token(TokenType.FOR);
+			case TRUE:		return new Token(TokenType.TRUE);
+			case FALSE: 	return new Token(TokenType.FALSE);
+			case AND: 		return new Token(TokenType.AND);
+			case OR: 		return new Token(TokenType.OR);
 		}
 		throw new RuntimeException("Unknown keyword " + token_value);
 	}

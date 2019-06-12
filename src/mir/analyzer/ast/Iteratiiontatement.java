@@ -17,6 +17,8 @@ public class Iteratiiontatement implements Statement {
 				_while.execute();
 			}catch(EndStatement end){
 				break;
+			}catch(ContinueStatement _continue) {
+				continue;
 			}
 		}
 	}

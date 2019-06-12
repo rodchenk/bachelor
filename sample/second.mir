@@ -1,4 +1,5 @@
-for index = 0; index < 10; index = index + 1 :[
-	if index % 2 == 0 and index != 0:
-		print index+"\n"
+for index = 0   index = index + 1 :[
+	if index == 4 continue
+	if index % 2 == 0 and index != 0 print index+"\n"
+	if index == 7 end
 ]
