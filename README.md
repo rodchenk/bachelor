@@ -10,7 +10,7 @@ bol_var = false;
 ### Conditional statement:
 ```ruby
 cond = true
-while cond{
+while cond:
 	if cond == false and true
     		print("Deadlock")
   	else end
@@ -26,8 +26,11 @@ print((1 + 1 >= 1 * 2) + "\n"); #true
 ### Loops:
 ```ruby
 for index = 0; index < 10; index = index + 1 :[
-	if index % 2 == 0 and index != 0:
-		print index+"\n" # all even numbers to 10
+	for index = 0  index < 10  index = index + 1 :[
+	if index == 4 continue
+	if index % 2 == 0 and index != 0 print index+"\n" #all even numbers except 4
+	if index == 7 end
+]
 ]
 ```
 
