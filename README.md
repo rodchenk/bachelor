@@ -23,14 +23,12 @@ print(str_var + "!\n"); #Hello World!
 print((1 + 1 >= 1 * 2) + "\n"); #true
 ```
 
-### Loops:
+### Lööps:
 ```ruby
 for index = 0; index < 10; index = index + 1 :[
-	for index = 0  index < 10  index = index + 1 :[
 	if index == 4 continue
 	if index % 2 == 0 and index != 0 print index+"\n" #all even numbers except 4
-	if index == 7 end
-]
+	if index == 7 end # break for loop
 ]
 ```
 
