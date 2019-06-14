@@ -26,9 +26,9 @@ print((1 + 1 >= 1 * 2) + "\n"); #true
 ### Lööps:
 ```ruby
 for index = 0; index < 10; index = index + 1 :[
-	if index == 4 continue
+	if index == 4 continue #skip if 4
 	if index % 2 == 0 and index != 0 print index+"\n" #all even numbers except 4
-	if index == 7 end # break for loop
+	if index == 7 end #break for loop
 ]
 ```
 
@@ -44,7 +44,7 @@ while i <= 10:[
 		print min
 		n = n - 1
 	]
-	print pn + "\n"
+	print pn + "\n" #print next Fibonacci number
 	sum = pn + nn
 	pn = nn
 	nn = sum
