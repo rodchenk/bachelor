@@ -2,9 +2,9 @@
 
 ### Variable expression:
 ```ruby
-x :number = 10;
-str_var :string = "Hello World";
-bol_var :boolean = false;
+x :number = 10
+str_var :string = "Hello World"
+bol_var :boolean = false
 ```
 
 ### Conditional statement:
