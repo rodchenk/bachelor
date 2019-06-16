@@ -1,5 +1,6 @@
 package mir.analyzer.ast;
 
+import mir.lib.BooleanValue;
 import mir.lib.NumberValue;
 import mir.lib.StringValue;
 import mir.lib.Value;
@@ -14,6 +15,10 @@ public class ValueExpression implements Expression{
 	
 	public ValueExpression(double value) {
 		this.value = new NumberValue(value);
+	}
+	
+	public ValueExpression(boolean value) {
+		this.value = new BooleanValue(value);
 	}
 	
 	@Override

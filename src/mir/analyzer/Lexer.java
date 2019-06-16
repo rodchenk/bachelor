@@ -18,6 +18,9 @@ public class Lexer{
 	private boolean quotes_opened = false;
 	private final String TRUE = "true", 
 						 FALSE = "false", 
+						 NUMBER = "number",
+						 BOOLEAN = "boolean",
+						 STRING = "string",
 						 PRINT = "print", 
 						 IF = "if", 
 						 ELSE = "else", 
@@ -53,7 +56,7 @@ public class Lexer{
 	final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG, MODULO, COLON);
 
 	final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);
-	final List<String> KEY_WORDS = Arrays.asList(PRINT, IF, ELSE, FOR, WHILE, END, CONTINUE, TRUE, FALSE, AND, OR);
+	final List<String> KEY_WORDS = Arrays.asList(PRINT, BOOLEAN, STRING, NUMBER, IF, ELSE, FOR, WHILE, END, CONTINUE, TRUE, FALSE, AND, OR);
 
 	public Lexer(String context) {
 		this.context = remove_comments_and_spaces(context);
@@ -70,6 +73,9 @@ public class Lexer{
 
 		while(hasNext()) {
 			next = next();
+			
+			if(next == ' ' || next == '\n' || next == '\t') 
+				continue; // skip whitespaces
 						
 			if(Character.isDigit(next)) {
 				lexemes.add(tokenizeNumber(next));
@@ -95,7 +101,6 @@ public class Lexer{
 				lexemes.add(new Token(TokenType.EOL));
 				continue;
 			}
-			if(next == ' ' || next == '\n' || next == '\t') continue; // skip whitespaces
 			throw new RuntimeException("Unknown lexeme: " + next);
 		}
 		return lexemes;
@@ -132,6 +137,7 @@ public class Lexer{
 		prev();
 
 		switch(next) {
+			case COLON: return new Token(TokenType.COLON);
 			case ALLOC: return new Token(TokenType.ALLOC);
 			case PLUS: 	return new Token(TokenType.PLUS);
 			case MINUS:	return new Token(TokenType.MINUS);
@@ -140,7 +146,6 @@ public class Lexer{
 			case MODULO:return new Token(TokenType.MODULO);
 			case GT: 	return new Token(TokenType.GT);
 			case LT: 	return new Token(TokenType.LT);
-			case COLON: return new Token(TokenType.COLON);
 		}
 		
 		throw new RuntimeException("Unknown operator: (" + next + ")");
@@ -161,13 +166,17 @@ public class Lexer{
 		final StringBuilder sb = new StringBuilder();
 		char current = next;
 		
-		while(hasNext() && (Character.isAlphabetic(current) )) {
+		while((Character.isAlphabetic(current) )) {
 			sb.append(current);
-			current = next();
+			if(hasNext())
+				current = next();
+			else break;
 		}
 
-		prev();
 		String token_value = sb.toString();
+		
+		if(hasNext())
+			prev(); //TODO check dependencies
 		
 		if(KEY_WORDS.contains(token_value))
 			return tokenizeKeyword(token_value);
@@ -179,14 +188,17 @@ public class Lexer{
 	private Token tokenizeKeyword(String token_value) {
 		switch(token_value) {
 			case PRINT: 	return new Token(TokenType.PRINT);
+			case NUMBER:	return new Token(TokenType.NUM);
+			case STRING:	return new Token(TokenType.STRING);
+			case BOOLEAN:	return new Token(TokenType.BOOLEAN);
 			case IF: 		return new Token(TokenType.IF);
 			case WHILE: 	return new Token(TokenType.WHILE);
 			case END: 		return new Token(TokenType.END);
 			case CONTINUE: 	return new Token(TokenType.CONTINUE);
 			case ELSE: 		return new Token(TokenType.ELSE);
 			case FOR: 		return new Token(TokenType.FOR);
-			case TRUE:		return new Token(TokenType.TRUE);
-			case FALSE: 	return new Token(TokenType.FALSE);
+			case TRUE:		return new Token(TokenType.TRUE, "true");
+			case FALSE: 	return new Token(TokenType.FALSE, "false");
 			case AND: 		return new Token(TokenType.AND);
 			case OR: 		return new Token(TokenType.OR);
 		}

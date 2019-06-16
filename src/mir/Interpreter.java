@@ -28,8 +28,6 @@ public class Interpreter {
 		Statement source = new Parser(tokens).parse();
 		System.out.println('\t' + "Parser time: " + TimeMeasurement.getResult("Parser") + "ms" + '\n');
 		
-		//System.err.println(source.toString());
-	
 		source.execute();
 	}
 	

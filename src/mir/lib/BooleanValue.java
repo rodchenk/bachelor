@@ -1,5 +1,7 @@
 package mir.lib;
 
+import mir.analyzer.TokenType;
+
 public class BooleanValue implements Value{
 
 	private boolean value;
@@ -31,6 +33,11 @@ public class BooleanValue implements Value{
 	@Override
 	public double asDouble() {
 		return value ? 1 : 0;
+	}
+
+	@Override
+	public TokenType type() {
+		return TokenType.BOOLEAN;
 	}
 
 }

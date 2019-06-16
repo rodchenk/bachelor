@@ -1,0 +1,3 @@
+var:boolean = true
+if var
+	print var

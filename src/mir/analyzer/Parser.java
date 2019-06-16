@@ -1,6 +1,7 @@
 package mir.analyzer;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 
 import mir.analyzer.ast.AllocStatement;
@@ -65,21 +66,39 @@ public class Parser {
 		if(this.is(FOR)) {//TODO Refactoring
 			// for index = 0; index < 10; index = index + 1:
 			current_token = this.getTokenByRelativePosition(0);
-			consume(ID);
-			consume(ALLOC); //skip =
-			final Statement instance =  new AllocStatement(current_token.getValue(), expression());
+			is(ID);
+			is(COLON);
+			TokenType type = this.getTokenByRelativePosition(0).getType();
+			Statement instance;
+			if(type.equals(NUM)) {
+				is(type);
+				is(ALLOC); //skip =
+				instance =  new AllocStatement(current_token.getValue(), type, expression());
+			}else {
+				is(ALLOC); //skip =
+				instance =  new AllocStatement(current_token.getValue(), expression());
+			}
+			
 			final Expression condition = or();
-			consume(ID);
-			consume(ALLOC);
+			is(ID);
+			is(ALLOC);
 			final Statement increment = new AllocStatement(current_token.getValue(), expression());
 			final Statement _for = getInheritedStatements();
 			return new ForStatement(instance, condition, increment, _for);
 		}
-		
-		if(this.is(ID) && this.is(ALLOC)) {	// x = ...
-			return new AllocStatement(current_token.getValue(), expression());
+
+		if(is(ID)) {
+			if(this.is(ALLOC)) {
+				return new AllocStatement(current_token.getValue(), expression());
+			}
+			if(this.is(COLON)) {
+				TokenType type = this.getTokenByRelativePosition(0).getType(); // variable type
+				consume(type);
+				consume(ALLOC);
+				return new AllocStatement(current_token.getValue(), type, expression());
+			}
 		}
-		
+
 		if(this.is(END)) {
 			return new EndStatement();
 		}
@@ -87,6 +106,7 @@ public class Parser {
 		if(this.is(CONTINUE)) {
 			return new ContinueStatement();
 		}
+
 		
 		throw new RuntimeException("Unknown statement:" + current_token.getType() + " " + current_token.getValue());
 	}	
@@ -197,11 +217,12 @@ public class Parser {
 	    	return new ValueExpression(Double.parseDouble(token_value));
 	    }
 
+	    if(is(TRUE) || is(FALSE)) { // TODO
+	    	return new ValueExpression(Boolean.valueOf(token_value));
+	    }
+	    
 	    if(is(TEXT)) {
 	    	return new ValueExpression(token_value);
-	    }
-	    if(is(TRUE) || is(FALSE)) { // TODO
-	    	return new ValueExpression(tokenByRelativePosition.getType().toString().toLowerCase());
 	    }
 	    
 	    if(is(LPT)) {
@@ -215,7 +236,7 @@ public class Parser {
 	
 	private Expression variable() {
 		final Token current_token = getTokenByRelativePosition(0);
-		
+		System.out.println("in variable statement " + current_token.getValue());
 		if(this.is(ID)) {
 			return new VariableExpression(current_token);
 		}

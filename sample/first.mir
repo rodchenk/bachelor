@@ -1,13 +1,8 @@
-pn = 0
-nn = 1
-i = 1
-min = "-"
+pn:number = 0
+nn:number = 1
+i:number = 1
+sum:number = 0
 while i <= 10:[
-	n = i
-	while n >= 0: [
-		print min
-		n = n - 1
-	]
 	print pn + "\n"
 	sum = pn + nn
 	pn = nn

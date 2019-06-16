@@ -1,5 +1,7 @@
 package mir.lib;
 
+import mir.analyzer.TokenType;
+
 public class NumberValue implements Value{
 	
 	final double value;
@@ -21,5 +23,10 @@ public class NumberValue implements Value{
 	@Override
 	public String toString() {
 		return asString();
+	}
+
+	@Override
+	public TokenType type() {
+		return TokenType.NUM;
 	}
 }
