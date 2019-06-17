@@ -1,37 +1,37 @@
 package mir.analyzer.ast;
 
-import mir.analyzer.TokenType;
+import mir.lib.Memory;
 import mir.lib.Variable;
 
 public class AllocStatement implements Statement{
 	
 	private final String name;
-	private final Expression expression;
-	private TokenType type;
+	private Expression expression;
+	private Variable variable;
 	
 	public AllocStatement(String name, Expression expression) {
 		this.name = name;
 		this.expression = expression;
-		this.type = null;
 	}
 	
-	public AllocStatement(String value, TokenType type, Expression expression) {
+	public AllocStatement(String value, Variable variable) {
 		this.name = value;
-		this.expression = expression;
-		this.type = type;
+		this.variable = variable;
 	}
 
 	@Override
 	public void execute() {
-		if(type == null) {
-			Variable.setVariable(name, expression);
+		if(variable == null) {
+			Memory.setVariable(name, expression);
 		}else {
-			Variable.create(name, type, expression);
+			Memory.create(name, variable);
 		}
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("%s = %s", name, expression);
+		return variable == null ?
+			String.format("%s = %s", name, expression) :
+			String.format("%s %s = %s", variable.getModifiers().get("data_type"), name, variable.getExpression().eval().asString());
 	}
 }

@@ -10,7 +10,7 @@ public enum TokenType {
 	TEXT, // ["*"]
 	NUMBER, // int und floating number
 	ID, // variable and function names
-	
+	CONST, //modifier
 	LPT, RPT, // ( and )
 	LCB, RCB, // { and }
 	LSB, RSB, // [and ]

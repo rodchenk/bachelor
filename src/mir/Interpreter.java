@@ -14,7 +14,7 @@ import mir.utility.TimeMeasurement;
 
 public class Interpreter {
 
-	private static final String SAMPLE_PATH = "sample/second.mir";
+	private static final String SAMPLE_PATH = "sample/constant.mir";
 	
 	private static void run(String program) {
 		TimeMeasurement.setMeasurement("Lexer");
@@ -27,7 +27,7 @@ public class Interpreter {
 		TimeMeasurement.setMeasurement("Parser");
 		Statement source = new Parser(tokens).parse();
 		System.out.println('\t' + "Parser time: " + TimeMeasurement.getResult("Parser") + "ms" + '\n');
-		
+
 		source.execute();
 	}
 	

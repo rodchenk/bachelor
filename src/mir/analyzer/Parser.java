@@ -1,8 +1,8 @@
 package mir.analyzer;
 
-import java.text.ParseException;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mir.analyzer.ast.AllocStatement;
 import mir.analyzer.ast.BinaryExpression;
@@ -19,14 +19,15 @@ import mir.analyzer.ast.PrintStatement;
 import mir.analyzer.ast.Statement;
 import mir.analyzer.ast.UnaryExpression;
 import mir.analyzer.ast.VariableExpression;
+import mir.lib.Variable;
 
 import static mir.analyzer.TokenType.*;
 
 public class Parser {
 	
-	final List<Token> tokens;
-	final int size;
-	int position;
+	final private List<Token> tokens;
+	final private int size;
+	private int position;
 	
 	public Parser(List<Token> tokens) {
 		this.tokens = tokens;
@@ -38,7 +39,7 @@ public class Parser {
 		
 		while(hasNext()) {
 			statements.add(statement());
-		}
+		} 
 
 		return statements;
 	}
@@ -73,7 +74,10 @@ public class Parser {
 			if(type.equals(NUM)) {
 				is(type);
 				is(ALLOC); //skip =
-				instance =  new AllocStatement(current_token.getValue(), type, expression());
+				Variable var = new Variable();
+				var.setExpression(expression());
+				var.getModifiers().put("data_type", type);
+				instance =  new AllocStatement(current_token.getValue(), var);
 			}else {
 				is(ALLOC); //skip =
 				instance =  new AllocStatement(current_token.getValue(), expression());
@@ -92,10 +96,19 @@ public class Parser {
 				return new AllocStatement(current_token.getValue(), expression());
 			}
 			if(this.is(COLON)) {
+//				Map<String, TokenType> mod = new HashMap<>();
+//				while(!this.is(ALLOC)) {
+//					if(this.is(CONST)) mod.put("const", CONST);
+//					if(this.is(NUMBER) || this.is(STRING) || this.is(BOOLEAN)) mod.put("data_type", this.getTokenByRelativePosition(-1).getType());
+//				}
+				// list of modifiers
 				TokenType type = this.getTokenByRelativePosition(0).getType(); // variable type
 				consume(type);
 				consume(ALLOC);
-				return new AllocStatement(current_token.getValue(), type, expression());
+				Variable var = new Variable();
+				var.setExpression(expression());
+				var.getModifiers().put("data_type", type);
+				return new AllocStatement(current_token.getValue(), var);
 			}
 		}
 
@@ -236,11 +249,9 @@ public class Parser {
 	
 	private Expression variable() {
 		final Token current_token = getTokenByRelativePosition(0);
-		System.out.println("in variable statement " + current_token.getValue());
 		if(this.is(ID)) {
 			return new VariableExpression(current_token);
 		}
-		
 		throw new RuntimeException("Unknown expression " + current_token.getType());
 	}
 	
