@@ -1,8 +1,6 @@
 package mir.analyzer;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mir.analyzer.ast.AllocStatement;
 import mir.analyzer.ast.BinaryExpression;
@@ -20,7 +18,6 @@ import mir.analyzer.ast.PrintStatement;
 import mir.analyzer.ast.Statement;
 import mir.analyzer.ast.UnaryExpression;
 import mir.analyzer.ast.VariableExpression;
-import mir.lib.Variable;
 
 import static mir.analyzer.TokenType.*;
 
@@ -72,17 +69,17 @@ public class Parser {
 			is(COLON);
 			TokenType type = this.getTokenByRelativePosition(0).getType();
 			Statement instance;
-			if(type.equals(NUM)) {
-				is(type);
-				is(ALLOC); //skip =
-				Variable var = new Variable();
-				var.setExpression(expression().eval());
-				var.getModifiers().put("data_type", type);
-				instance =  new AllocStatement(current_token.getValue(), var);
-			}else {
+//			if(type.equals(NUM)) {
+//				is(type);
+//				is(ALLOC); //skip =
+//				Variable var = new Variable();
+//				var.setExpression(expression().eval());
+//				var.getModifiers().put("data_type", type);
+//				instance =  new AllocStatement(current_token.getValue(), var);
+//			}else {
 				is(ALLOC); //skip =
 				instance =  new AllocStatement(current_token.getValue(), expression());
-			}
+//			}
 			
 			final Expression condition = or();
 			is(ID);
@@ -106,10 +103,10 @@ public class Parser {
 				TokenType type = this.getTokenByRelativePosition(0).getType(); // variable type
 				consume(type);
 				consume(ALLOC);
-				Variable var = new Variable();
-				var.setExpression(expression().eval());
-				var.getModifiers().put("data_type", type);
-				return new AllocStatement(current_token.getValue(), var);
+//				Variable var = new Variable();
+//				var.setExpression(expression().eval());
+//				var.getModifiers().put("data_type", type);
+				//return new AllocStatement(current_token.getValue(), null);
 			}
 		}
 
