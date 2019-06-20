@@ -2,7 +2,7 @@ package mir.analyzer.ast;
 
 import mir.analyzer.Token;
 import mir.lib.Value;
-import mir.lib.Memory;
+import mir.lib.VariableContainer;
 
 public class VariableExpression implements Expression{
 	
@@ -14,7 +14,7 @@ public class VariableExpression implements Expression{
 
 	@Override
 	public Value eval() {
-		return Memory.getVariable(name);
+		return VariableContainer.getVariable(name);
 	}
 
 	@Override
