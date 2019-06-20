@@ -9,7 +9,7 @@ import mir.analyzer.ast.Expression;
 public class Variable {
 
 	private Map<String, TokenType> modifiers = new HashMap<>();
-	private Expression expression;
+	private Value expression;
 
 	public Variable() {
 		modifiers.put("data_type", null);
@@ -17,11 +17,11 @@ public class Variable {
 		modifiers.put("constant", null);
 	}
 	
-	public void setExpression(Expression expression) {
+	public void setExpression(Value expression) {
 		this.expression = expression;
 	}
 	
-	public Expression getExpression() {
+	public Value getExpression() {
 		return this.expression;
 	}
 	

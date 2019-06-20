@@ -75,7 +75,7 @@ public class Parser {
 				is(type);
 				is(ALLOC); //skip =
 				Variable var = new Variable();
-				var.setExpression(expression());
+				var.setExpression(expression().eval());
 				var.getModifiers().put("data_type", type);
 				instance =  new AllocStatement(current_token.getValue(), var);
 			}else {
@@ -106,7 +106,7 @@ public class Parser {
 				consume(type);
 				consume(ALLOC);
 				Variable var = new Variable();
-				var.setExpression(expression());
+				var.setExpression(expression().eval());
 				var.getModifiers().put("data_type", type);
 				return new AllocStatement(current_token.getValue(), var);
 			}

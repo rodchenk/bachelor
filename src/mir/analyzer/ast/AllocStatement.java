@@ -1,6 +1,6 @@
 package mir.analyzer.ast;
 
-import mir.lib.Memory;
+import mir.lib.VariableContainer;
 import mir.lib.Variable;
 
 public class AllocStatement implements Statement{
@@ -21,17 +21,14 @@ public class AllocStatement implements Statement{
 
 	@Override
 	public void execute() {
-		if(variable == null) {
-			Memory.setVariable(name, expression);
-		}else {
-			Memory.create(name, variable);
-		}
+		if(variable == null) 
+			VariableContainer.setVariable(name, expression.eval());
 	}
 	
 	@Override
 	public String toString() {
 		return variable == null ?
 			String.format("%s = %s", name, expression) :
-			String.format("%s %s = %s", variable.getModifiers().get("data_type"), name, variable.getExpression().eval().asString());
+			String.format("%s %s = %s", variable.getModifiers().get("data_type"), name, variable.getExpression().asString());
 	}
 }
