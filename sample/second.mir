@@ -1,7 +1,7 @@
-line:string = "\n"
+line = "\n"
 if line == "\n":
 	print true + line
-for index:number = 0  index < 10  index = index + 1 :[
+for index = 0  index < 10  index = index + 1 :[
 	if index == 4 continue
 	if index % 2 == 0 and index != 0 print index + line
 	if index == 7 end

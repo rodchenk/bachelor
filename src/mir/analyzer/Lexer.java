@@ -43,6 +43,7 @@ public class Lexer{
 						 RSB = ']', 
 						 NEG = '!',
 						 EOL = ';',
+						 COMMA = ',',
 						 COLON = ':',
 						 ALLOC = '=', 
 						 PLUS = '+', 
@@ -54,7 +55,7 @@ public class Lexer{
 						 LT = '<';
 
 	private final List<Character> BRACKETS = Arrays.asList(LPT, RPT, LCB, RCB, LSB, RSB);
-	final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG, MODULO, COLON);
+	final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG, MODULO, COLON, COMMA);
 
 	final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);
 	final List<String> KEY_WORDS = Arrays.asList(PRINT, BOOLEAN, STRING, NUMBER, CONST, IF, ELSE, FOR, WHILE, END, CONTINUE, TRUE, FALSE, AND, OR);
@@ -138,6 +139,7 @@ public class Lexer{
 		prev();
 
 		switch(next) {
+			case COMMA: return new Token(TokenType.COMMA);
 			case COLON: return new Token(TokenType.COLON);
 			case ALLOC: return new Token(TokenType.ALLOC);
 			case PLUS: 	return new Token(TokenType.PLUS);

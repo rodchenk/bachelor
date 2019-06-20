@@ -13,6 +13,7 @@ import mir.analyzer.ast.ContinueStatement;
 import mir.analyzer.ast.EndStatement;
 import mir.analyzer.ast.Expression;
 import mir.analyzer.ast.ForStatement;
+import mir.analyzer.ast.FunctionalExpression;
 import mir.analyzer.ast.Iteratiiontatement;
 import mir.analyzer.ast.ValueExpression;
 import mir.analyzer.ast.PrintStatement;
@@ -123,6 +124,18 @@ public class Parser {
 		
 		throw new RuntimeException("Unknown statement:" + current_token.getType() + " " + current_token.getValue());
 	}	
+	
+	private Expression function() {
+		final String name = getTokenByRelativePosition(0).getValue();
+		FunctionalExpression def = new FunctionalExpression(name);
+		consume(ID);
+		consume(LPT);
+		while(!this.is(RPT)) {
+			def.addArgs(expression());
+			is(COMMA);
+		}
+		return def;
+	}
 
 	private Expression expression() {
 		return or();
@@ -249,6 +262,10 @@ public class Parser {
 	
 	private Expression variable() {
 		final Token current_token = getTokenByRelativePosition(0);
+		
+		if(current_token.getType().equals(ID) && getTokenByRelativePosition(1).getType().equals(LPT)) {
+			return function();
+		}
 		if(this.is(ID)) {
 			return new VariableExpression(current_token);
 		}

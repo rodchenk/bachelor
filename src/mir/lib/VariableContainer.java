@@ -16,10 +16,7 @@ public class VariableContainer {
 	}
 	
 	public static void setVariable(String name, Value value) {
-		System.err.println("suka huli suda ne zahodit");
-		variable_map.forEach((key, val) -> System.out.println(key + ": " + val.asString()));
-		Value v = variable_map.get(name);
-			variable_map.put(name, value);
+		variable_map.put(name, value);
 	}
 	
 }

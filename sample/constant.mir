@@ -1,4 +1,5 @@
-pi = 3.1415
+pi  = 3.1415
 length = 10
 radius = pi * length
-print "Radius is " + radius
+print "Radius is " + radius + "\n"
+print pow(2, 3)
