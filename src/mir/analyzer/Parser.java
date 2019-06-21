@@ -1,5 +1,6 @@
 package mir.analyzer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mir.analyzer.ast.AllocStatement;
@@ -11,7 +12,9 @@ import mir.analyzer.ast.ContinueStatement;
 import mir.analyzer.ast.EndStatement;
 import mir.analyzer.ast.Expression;
 import mir.analyzer.ast.ForStatement;
+import mir.analyzer.ast.FunctionDefineStatement;
 import mir.analyzer.ast.FunctionalExpression;
+import mir.analyzer.ast.FunctionalStatement;
 import mir.analyzer.ast.Iteratiiontatement;
 import mir.analyzer.ast.ValueExpression;
 import mir.analyzer.ast.PrintStatement;
@@ -44,7 +47,7 @@ public class Parser {
 	
 	private Statement statement() {
 		Token current_token = this.getTokenByRelativePosition(0);
-
+		
 		if(this.is(PRINT)) {
 			return new PrintStatement(expression());
 		}
@@ -88,6 +91,14 @@ public class Parser {
 			final Statement _for = getInheritedStatements();
 			return new ForStatement(instance, condition, increment, _for);
 		}
+		
+		if(this.is(DEF)) {
+			return functionDefine();
+		}
+		
+		if(current_token.getType().equals(ID) && getTokenByRelativePosition(1).getType().equals(LPT)) {
+			return new FunctionalStatement(function());
+		}
 
 		if(is(ID)) {
 			if(this.is(ALLOC)) {
@@ -121,6 +132,18 @@ public class Parser {
 		
 		throw new RuntimeException("Unknown statement:" + current_token.getType() + " " + current_token.getValue());
 	}	
+	
+	private FunctionDefineStatement functionDefine() {
+		final String name = consume(ID).getValue();
+		consume(LPT);
+		List<String> args = new ArrayList<>();
+		while(!this.is(RPT)) {
+			args.add(consume(ID).getValue());
+			is(COMMA);
+		}
+		Statement def_body = getInheritedStatements();
+		return new FunctionDefineStatement(name, args, def_body);
+	}
 	
 	private Expression function() {
 		final String name = getTokenByRelativePosition(0).getValue();

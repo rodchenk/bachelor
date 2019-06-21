@@ -1,0 +1,8 @@
+def printhello(hello) :[
+	hello = 14
+	println(hello)
+]
+
+i = 10
+printhello(i)
+#println(i)

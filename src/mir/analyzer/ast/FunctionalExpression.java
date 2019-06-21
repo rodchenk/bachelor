@@ -3,8 +3,11 @@ package mir.analyzer.ast;
 import java.util.ArrayList;
 import java.util.List;
 
+import mir.lib.Function;
 import mir.lib.FunctionContainer;
+import mir.lib.UserDefinedFunction;
 import mir.lib.Value;
+import mir.lib.VariableContainer;
 
 public class FunctionalExpression implements Expression{
 	
@@ -27,12 +30,26 @@ public class FunctionalExpression implements Expression{
 	
 	@Override
 	public Value eval() {
+		final Function def = FunctionContainer.getFunction(name);
+		
 		int size = args.size();
 		Value[] values = new Value[size];
 		for(int i = 0; i < size; i++) {
 			values[i] = args.get(i).eval();
 		}
-		return FunctionContainer.getFunction(name).execute(values);
+		if(def instanceof UserDefinedFunction) {
+			UserDefinedFunction _def = (UserDefinedFunction) def;
+			if(size != _def.getArgSize()) 
+				throw new RuntimeException("Invalid count of arguments");
+			VariableContainer.push();
+			for (int i = 0; i < size; i++) {
+				VariableContainer.setVariable(_def.getArgName(i), values[i]);
+			}
+			Value result = _def.execute(values);
+			VariableContainer.pop();
+			return result;
+		}
+		return def.execute(values);
 	}
 
 }

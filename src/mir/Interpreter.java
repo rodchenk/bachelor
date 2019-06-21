@@ -14,7 +14,7 @@ import mir.utility.TimeMeasurement;
 
 public class Interpreter {
 
-	private static final String SAMPLE_PATH = "sample/second.mir";
+	private static final String SAMPLE_PATH = "sample/function.mir";
 	
 	private static void run(String program) {
 		TimeMeasurement.setMeasurement("Lexer");
