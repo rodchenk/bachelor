@@ -32,6 +32,19 @@ for index :number = 0; index < 10; index = index + 1 :[
 ]
 ```
 
+### Functions:
+```ruby
+def log(msg): print err + "\n"
+
+def sum(a, b) :[
+	sum = a + b
+	return sum
+]
+
+log("Hello world")
+log("5 + 6 is " + sum(5, 6))
+```
+
 ### Fibonacci numbers:
 ```ruby
 pn :number = 0
