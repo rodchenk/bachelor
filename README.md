@@ -34,7 +34,7 @@ for index :number = 0; index < 10; index = index + 1 :[
 
 ### Functions:
 ```ruby
-def log(msg): print err + "\n"
+def log(msg): print msg + "\n"
 
 def sum(a, b) :[
 	sum = a + b
