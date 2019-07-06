@@ -34,15 +34,14 @@ for index :number = 0; index < 10; index = index + 1 :[
 
 ### Functions:
 ```ruby
-def log(msg): print msg + "\n"
-
-def sum(a, b) :[
-	sum = a + b
-	return sum
-]
-
-log("Hello world")
-log("5 + 6 is " + sum(5, 6))
+def sum(i, k): 
+	return i + k
+	
+def diff(i, k):
+	return i - k
+	
+print sum(10, 45) + "\n"
+print diff(120, 42) + "\n"
 ```
 
 ### Fibonacci numbers:
