@@ -2,6 +2,7 @@ package mir.lib;
 
 import java.util.List;
 
+import mir.analyzer.ast.ReturnStatement;
 import mir.analyzer.ast.Statement;
 import mir.lib.Function;
 import mir.lib.Value;
@@ -27,8 +28,12 @@ public class UserDefinedFunction implements Function {
 	
 	@Override
 	public Value execute(Value... values) {
-		def_body.execute();
-		return FunctionContainer._void;
+		try {
+			def_body.execute();
+			return FunctionContainer._void;
+		}catch(ReturnStatement _return) {
+			return _return.getResult();
+		}
 	}
 
 }

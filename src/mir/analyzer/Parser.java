@@ -18,6 +18,7 @@ import mir.analyzer.ast.FunctionalStatement;
 import mir.analyzer.ast.Iteratiiontatement;
 import mir.analyzer.ast.ValueExpression;
 import mir.analyzer.ast.PrintStatement;
+import mir.analyzer.ast.ReturnStatement;
 import mir.analyzer.ast.Statement;
 import mir.analyzer.ast.UnaryExpression;
 import mir.analyzer.ast.VariableExpression;
@@ -120,16 +121,13 @@ public class Parser {
 				//return new AllocStatement(current_token.getValue(), null);
 			}
 		}
-
-		if(this.is(END)) {
-			return new EndStatement();
-		}
 		
-		if(this.is(CONTINUE)) {
-			return new ContinueStatement();
-		}
+		if(this.is(RETURN)) return new ReturnStatement(expression());
 
+		if(this.is(END)) return new EndStatement();
 		
+		if(this.is(CONTINUE)) return new ContinueStatement();
+				
 		throw new RuntimeException("Unknown statement:" + current_token.getType() + " " + current_token.getValue());
 	}	
 	
@@ -289,14 +287,14 @@ public class Parser {
 		if(this.is(ID)) {
 			return new VariableExpression(current_token);
 		}
-		throw new RuntimeException("Unknown expression " + current_token.getType());
+		throw new RuntimeException("Unknown expression " + current_token.getType() + " with value " + current_token.getValue());
 	}
 	
 	private Token getTokenByRelativePosition(int add_position) {
 		int pos = this.position + add_position;
 		if(hasTokenAt(pos))
 			return tokens.get(pos);
-		return new Token(TokenType.EOL);
+		return new Token(TokenType.EOF);
 	}
 	
 	/**
@@ -345,6 +343,7 @@ public class Parser {
 	 * @return boolean true if there is next character in program content, otherwise false
 	 */
 	private boolean hasNext() {
+		//return !getTokenByRelativePosition(0).getType().equals(EOF);
 		return position < size;
 	}
 	
@@ -353,6 +352,6 @@ public class Parser {
 	 * @return true if there is character at position <b>i</b> in program content, otherwise false
 	 */
 	private boolean hasTokenAt(int i) {
-		return i < size;
+		return i < size && i >= 0;
 	}
 }

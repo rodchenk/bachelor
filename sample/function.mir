@@ -1,8 +1,6 @@
-def printhello(hello) :[
-	hello = 14
-	println(hello)
-]
-
-i = 10
-printhello(i)
-#println(i)
+def sum(i, k): 
+	return i + k
+def diff(i, k):
+	return i - k
+print sum(10, 45) + "\n"
+print diff(120, 42) + "\n"

@@ -29,6 +29,7 @@ public class Lexer{
 						 WHILE = "while", 
 						 END="end", 
 						 CONTINUE = "continue",
+						 RETURN = "return",
 						 DEF = "def",
 						 EQ = "==", 
 						 GTEQ = ">=", 
@@ -59,7 +60,7 @@ public class Lexer{
 	final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG, MODULO, COLON, COMMA);
 
 	final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);
-	final List<String> KEY_WORDS = Arrays.asList(PRINT, DEF, BOOLEAN, STRING, NUMBER, CONST, IF, ELSE, FOR, WHILE, END, CONTINUE, TRUE, FALSE, AND, OR);
+	final List<String> KEY_WORDS = Arrays.asList(PRINT, DEF, BOOLEAN, STRING, NUMBER, RETURN, CONST, IF, ELSE, FOR, WHILE, END, CONTINUE, TRUE, FALSE, AND, OR);
 
 	public Lexer(String context) {
 		this.context = remove_comments_and_spaces(context);
@@ -84,7 +85,7 @@ public class Lexer{
 				lexemes.add(tokenizeNumber(next));
 				continue;
 			}
-			if(Character.isLetter(next)) {
+			if(Character.isLetter(next) || next == '_') {
 				lexemes.add(tokenizeID(next));
 				continue;
 			}
@@ -170,7 +171,7 @@ public class Lexer{
 		final StringBuilder sb = new StringBuilder();
 		char current = next;
 		
-		while((Character.isAlphabetic(current) )) {
+		while(isValidName(current)) {
 			sb.append(current);
 			if(hasNext())
 				current = next();
@@ -178,9 +179,7 @@ public class Lexer{
 		}
 
 		String token_value = sb.toString();
-		
-		if(hasNext())
-			prev(); //TODO check dependencies
+		prev();
 		
 		if(KEY_WORDS.contains(token_value))
 			return tokenizeKeyword(token_value);
@@ -188,11 +187,15 @@ public class Lexer{
 		return new Token(TokenType.ID, token_value);
 	}
 
+	boolean isValidName(char ch) {
+		return Character.isAlphabetic(ch) || Character.isDigit(ch) || ch == '_' || ch == '$';
+	}
 	
 	private Token tokenizeKeyword(String token_value) {
 		switch(token_value) {
 			case PRINT: 	return new Token(TokenType.PRINT);
 			case DEF: 		return new Token(TokenType.DEF);
+			case RETURN: 	return new Token(TokenType.RETURN);
 			case NUMBER:	return new Token(TokenType.NUM);
 			case STRING:	return new Token(TokenType.STRING);
 			case BOOLEAN:	return new Token(TokenType.BOOLEAN);
