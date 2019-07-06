@@ -19,8 +19,8 @@ while cond:
 
 ### Print statement:
 ```ruby
-print(str_var + "!\n"); #Hello World!
-print((1 + 1 >= 1 * 2) + "\n"); #true
+print str_var + "!\n" #Hello World!
+print (1 + 1 >= 1 * 2) + "\n"  #true
 ```
 
 ### Lööps:
