@@ -57,8 +57,7 @@ def fib(n):[
 var: _num = 10
 var: result = -1 * fib(_num)
 
-if result > 0:
-	print _num + "'th Fib number is " + result;
+print _num + "'th Fib number is " + result; #10'th Fib number is 55
 	
 # or without recursive function
 
