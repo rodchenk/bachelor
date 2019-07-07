@@ -27,6 +27,7 @@ public class Lexer{
 						 ELSE = "else", 
 						 FOR = "for", 
 						 WHILE = "while", 
+						 VAR = "var",
 						 END="end", 
 						 CONTINUE = "continue",
 						 RETURN = "return",
@@ -60,7 +61,7 @@ public class Lexer{
 	final List<Character> OPERATORS = Arrays.asList(PLUS, MINUS, STAR, SLASH, ALLOC, GT, LT, NEG, MODULO, COLON, COMMA);
 
 	final List<String> DUAL_OPERATORS = Arrays.asList(EQ, LTEQ, GTEQ, NOTEQ);
-	final List<String> KEY_WORDS = Arrays.asList(PRINT, DEF, BOOLEAN, STRING, NUMBER, RETURN, CONST, IF, ELSE, FOR, WHILE, END, CONTINUE, TRUE, FALSE, AND, OR);
+	final List<String> KEY_WORDS = Arrays.asList(PRINT, DEF, BOOLEAN, STRING, NUMBER, RETURN, VAR, CONST, IF, ELSE, FOR, WHILE, END, CONTINUE, TRUE, FALSE, AND, OR);
 
 	public Lexer(String context) {
 		this.context = remove_comments_and_spaces(context);
@@ -200,6 +201,7 @@ public class Lexer{
 			case STRING:	return new Token(TokenType.STRING);
 			case BOOLEAN:	return new Token(TokenType.BOOLEAN);
 			case CONST:		return new Token(TokenType.CONST);
+			case VAR: 		return new Token(TokenType.VAR);
 			case IF: 		return new Token(TokenType.IF);
 			case WHILE: 	return new Token(TokenType.WHILE);
 			case END: 		return new Token(TokenType.END);

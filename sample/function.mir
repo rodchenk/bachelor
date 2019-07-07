@@ -2,5 +2,8 @@ def sum(i, k):
 	return i + k
 def diff(i, k):
 	return i - k
-print sum(10, 45) + "\n"
+
+var: temp = 100
+temp = 10
+print sum(temp, temp) + "\n"
 print diff(120, 42) + "\n"

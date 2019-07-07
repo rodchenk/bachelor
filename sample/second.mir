@@ -1,7 +1,8 @@
-line = "\n"
+var: line = "\n"
+var: index = 0
 if line == "\n":
 	print true + line
-for index = 0  index < 10  index = index + 1 :[
+for index end index < 10 end index = index + 1 :[
 	if index == 4 continue
 	if index % 2 == 0 and index != 0 print index + line
 	if index == 7 end

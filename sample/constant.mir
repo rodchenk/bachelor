@@ -1,5 +1,5 @@
-pi  = 3.1415
-length = 10
-radius = pi * length
+var:pi  = 3.1415
+var: length = 10
+var: radius = pi * length
 print "Radius is " + radius + "\n"
 println("2^3 = " + pow(2, 3))

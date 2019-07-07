@@ -25,8 +25,15 @@ public class VariableContainer {
 			throw new RuntimeException("Variable " + name + " does not exist");
 	}
 	
-	public static void setVariable(String name, Value value) {
-		variable_map.put(name, value);
+	public static void setVariable(boolean _new, String name, Value value) {
+		boolean exists = variable_map.containsKey(name);
+		if(_new && exists) {
+			throw new RuntimeException("Variable " + name + " already exists");
+//		}else if(!_new && !exists){
+//			throw new RuntimeException("Variable " + name + " does not exist");
+// 		TODO
+		}else {
+			variable_map.put(name, value);
+		}
 	}
-	
 }

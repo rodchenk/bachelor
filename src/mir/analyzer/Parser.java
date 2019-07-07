@@ -66,26 +66,29 @@ public class Parser {
 			return new Iteratiiontatement(condition, _while);
 		}
 		
-		if(this.is(FOR)) {//TODO Refactoring
-			// for index = 0; index < 10; index = index + 1:
-			current_token = this.getTokenByRelativePosition(0);
-			is(ID);
-			is(COLON);
-			TokenType type = this.getTokenByRelativePosition(0).getType();
+		if(this.is(FOR)) {
 			Statement instance;
-//			if(type.equals(NUM)) {
-//				is(type);
-//				is(ALLOC); //skip =
-//				Variable var = new Variable();
-//				var.setExpression(expression().eval());
-//				var.getModifiers().put("data_type", type);
-//				instance =  new AllocStatement(current_token.getValue(), var);
-//			}else {
-				is(ALLOC); //skip =
-				instance =  new AllocStatement(current_token.getValue(), expression());
-//			}
+			// for index = 0; index < 10; index = index + 1:
+			// for index; index < 10 ...
+			// for var: index = 1; index < ...
+			boolean _new = is(VAR);
+			if(_new) consume(COLON);
 			
+			current_token = getTokenByRelativePosition(0);
+			if(getTokenByRelativePosition(1).getType().equals(ALLOC)) { // index = ..
+				is(ID);
+				is(ALLOC); //skip =
+				instance =  new AllocStatement(_new, current_token.getValue(), expression());
+			}else {
+				instance =  new AllocStatement(_new, current_token.getValue(), expression());
+			}
+
+			consume(END);
+
 			final Expression condition = or();
+				
+			consume(END);
+
 			is(ID);
 			is(ALLOC);
 			final Statement increment = new AllocStatement(current_token.getValue(), expression());
@@ -100,26 +103,16 @@ public class Parser {
 		if(current_token.getType().equals(ID) && getTokenByRelativePosition(1).getType().equals(LPT)) {
 			return new FunctionalStatement(function());
 		}
+		
+		if(is(VAR)) {
+			consume(COLON);
+			current_token = consume(ID);
+			consume(ALLOC);
+			return new AllocStatement(true, current_token.getValue(), expression());
+		}
 
-		if(is(ID)) {
-			if(this.is(ALLOC)) {
-				return new AllocStatement(current_token.getValue(), expression());
-			}
-			if(this.is(COLON)) {
-//				Map<String, TokenType> mod = new HashMap<>();
-//				while(!this.is(ALLOC)) {
-//					if(this.is(CONST)) mod.put("const", CONST);
-//					if(this.is(NUMBER) || this.is(STRING) || this.is(BOOLEAN)) mod.put("data_type", this.getTokenByRelativePosition(-1).getType());
-//				}
-				// list of modifiers
-				TokenType type = this.getTokenByRelativePosition(0).getType(); // variable type
-				consume(type);
-				consume(ALLOC);
-//				Variable var = new Variable();
-//				var.setExpression(expression().eval());
-//				var.getModifiers().put("data_type", type);
-				//return new AllocStatement(current_token.getValue(), null);
-			}
+		if(is(ID) && is(ALLOC)) {
+			return new AllocStatement(current_token.getValue(), expression());
 		}
 		
 		if(this.is(RETURN)) return new ReturnStatement(expression());
@@ -136,6 +129,8 @@ public class Parser {
 		consume(LPT);
 		List<String> args = new ArrayList<>();
 		while(!this.is(RPT)) {
+			is(VAR);
+			is(COLON);
 			args.add(consume(ID).getValue());
 			is(COMMA);
 		}

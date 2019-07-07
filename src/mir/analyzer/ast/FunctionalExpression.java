@@ -43,7 +43,7 @@ public class FunctionalExpression implements Expression{
 				throw new RuntimeException("Invalid count of arguments");
 			VariableContainer.push();
 			for (int i = 0; i < size; i++) {
-				VariableContainer.setVariable(_def.getArgName(i), values[i]);
+				VariableContainer.setVariable(false, _def.getArgName(i), values[i]);
 			}
 			Value result = _def.execute(values);
 			VariableContainer.pop();
