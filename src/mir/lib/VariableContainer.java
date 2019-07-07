@@ -31,7 +31,7 @@ public class VariableContainer {
 			throw new RuntimeException("Variable " + name + " already exists");
 //		}else if(!_new && !exists){
 //			throw new RuntimeException("Variable " + name + " does not exist");
-// 		TODO
+// 		TODO problems with function args
 		}else {
 			variable_map.put(name, value);
 		}
