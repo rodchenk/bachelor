@@ -9,7 +9,7 @@ var: bol_var = false #boolean
 
 ### Conditional statement:
 ```ruby
-var :cond = true
+var: cond = true
 while cond:
 	if cond == false and true
     		print("Deadlock")
