@@ -27,8 +27,8 @@ print (1 + 1 >= 1 * 2) + "\n"  #true
 ```ruby
 var: index = 0
 for index end index < 10 end index = index + 1 :[
-	if index == 4 continue #skip if 4
-	if index % 2 == 0 and index != 0 print index+"\n" #all even numbers except 4
+	if index == 4 continue #skip if index is 4
+	if index % 2 == 0 and index != 0 print index+"\n" #all even numbers
 	if index == 7 end #break for loop
 ]
 ```
@@ -62,10 +62,10 @@ if result > 0:
 	
 # or without recursive function
 
-pn :number = 0
-nn :number = 1
-i :number = 1
-sum :number = 0
+var: pn = 0
+var: nn = 1
+var: i = 1
+var: sum = 0
 while i <= 10:[
 	print pn + "\n" #print next Fibonacci number
 	sum = pn + nn
