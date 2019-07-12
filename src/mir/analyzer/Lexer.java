@@ -160,11 +160,15 @@ public class Lexer{
 	private Token tokenizeNumber(char next) {
 		StringBuilder sb = new StringBuilder();
 		char current = next;
-		while(hasNext() && (Character.isDigit(current) || current == '.')) {
+		while(Character.isDigit(current) || current == '.') {
 			sb.append(current);
-			current = next();
+			if(hasNext())
+				current = next();
+			else break;
 		}
-		prev();
+		
+		if(hasNext())
+			prev();
 		return new Token(TokenType.NUMBER, sb.toString());
 	}
 	
@@ -180,7 +184,9 @@ public class Lexer{
 		}
 
 		String token_value = sb.toString();
-		prev();
+		
+		if(hasNext())
+			prev();
 		
 		if(KEY_WORDS.contains(token_value))
 			return tokenizeKeyword(token_value);

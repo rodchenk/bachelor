@@ -1,0 +1,7 @@
+#array values
+var: arr = {0, 1, 2, 3, 4}
+arr[0] = arr[4]
+print "\t" + arr 
+print "\n"
+
+def function(): print "hello"

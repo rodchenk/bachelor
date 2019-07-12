@@ -1,7 +1,5 @@
 package mir.lib;
 
-import mir.analyzer.TokenType;
-
 public class StringValue implements Value{
 	
 	final private String value;
@@ -27,11 +25,6 @@ public class StringValue implements Value{
 	@Override
 	public String toString() {
 		return "hello from StringValue";
-	}
-
-	@Override
-	public TokenType type() {
-		return TokenType.STRING;
 	}
 
 }

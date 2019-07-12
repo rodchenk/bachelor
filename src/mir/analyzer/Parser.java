@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mir.analyzer.ast.AllocStatement;
+import mir.analyzer.ast.ArrayAccessExpression;
+import mir.analyzer.ast.ArrayAllocStatement;
+import mir.analyzer.ast.ArrayExpression;
 import mir.analyzer.ast.BinaryExpression;
 import mir.analyzer.ast.BlockStatement;
 import mir.analyzer.ast.ConditionalExpression;
@@ -47,7 +50,7 @@ public class Parser {
 	}
 	
 	private Statement statement() {
-		Token current_token = this.getTokenByRelativePosition(0);
+		Token current_token = this.look(0);
 		
 		if(this.is(PRINT)) {
 			return new PrintStatement(expression());
@@ -74,10 +77,10 @@ public class Parser {
 			boolean _new = is(VAR);
 			if(_new) consume(COLON);
 			
-			current_token = getTokenByRelativePosition(0);
-			if(getTokenByRelativePosition(1).getType().equals(ALLOC)) { // index = ..
-				is(ID);
-				is(ALLOC); //skip =
+			current_token = look(0);
+			if(look(1).getType().equals(ALLOC)) { // index = ..
+				consume(ID);
+				consume(ALLOC);
 				instance =  new AllocStatement(_new, current_token.getValue(), expression());
 			}else {
 				instance =  new AllocStatement(_new, current_token.getValue(), expression());
@@ -89,8 +92,8 @@ public class Parser {
 				
 			consume(END);
 
-			is(ID);
-			is(ALLOC);
+			consume(ID);
+			consume(ALLOC);
 			final Statement increment = new AllocStatement(current_token.getValue(), expression());
 			final Statement _for = getInheritedStatements();
 			return new ForStatement(instance, condition, increment, _for);
@@ -100,7 +103,7 @@ public class Parser {
 			return functionDefine();
 		}
 		
-		if(current_token.getType().equals(ID) && getTokenByRelativePosition(1).getType().equals(LPT)) {
+		if(current_token.getType().equals(ID) && look(1).getType().equals(LPT)) {
 			return new FunctionalStatement(function());
 		}
 		
@@ -111,10 +114,22 @@ public class Parser {
 			return new AllocStatement(true, current_token.getValue(), expression());
 		}
 
-		if(is(ID) && is(ALLOC)) {
+		if(lookMatch(0, ID) && lookMatch(1, ALLOC)) {
+			consume(ID);
+			consume(ALLOC);			
 			return new AllocStatement(current_token.getValue(), expression());
 		}
 		
+		if(lookMatch(0, ID) && lookMatch(1, LSB)) {
+			// arr[1] = 100
+			consume(ID);
+			consume(LSB);
+			Expression index = expression();
+			consume(RSB);
+			consume(ALLOC);
+			return new ArrayAllocStatement(current_token.getValue(), index, expression());
+		}
+				
 		if(this.is(RETURN)) return new ReturnStatement(expression());
 
 		if(this.is(END)) return new EndStatement();
@@ -139,7 +154,7 @@ public class Parser {
 	}
 	
 	private Expression function() {
-		final String name = getTokenByRelativePosition(0).getValue();
+		final String name = look(0).getValue();
 		FunctionalExpression def = new FunctionalExpression(name);
 		consume(ID);
 		consume(LPT);
@@ -249,7 +264,7 @@ public class Parser {
 	}
 	
 	private Expression primary() {
-	    Token tokenByRelativePosition = getTokenByRelativePosition(0);
+	    Token tokenByRelativePosition = look(0);
 		final String token_value = tokenByRelativePosition.getValue();
 	    
 		if (is(NUMBER)) {
@@ -274,24 +289,52 @@ public class Parser {
 	}
 	
 	private Expression variable() {
-		final Token current_token = getTokenByRelativePosition(0);
+		final Token current_token = look(0);
 		
-		if(current_token.getType().equals(ID) && getTokenByRelativePosition(1).getType().equals(LPT)) {
+		if(current_token.getType().equals(ID) && lookMatch(1, LPT)) {
 			return function();
 		}
+		
+		if(current_token.getType().equals(ID) && lookMatch(1, LSB)) {
+			return array_element();
+		}
+		
+		if(lookMatch(0, LCB)) {
+			// {0, 2, 4}
+			List<Expression> elements = new ArrayList<>();
+			consume(LCB);
+			while(!this.is(RCB)) {
+				elements.add(expression());
+				is(COMMA);
+			}
+			return new ArrayExpression(elements);
+		}
+		
 		if(this.is(ID)) {
 			return new VariableExpression(current_token);
 		}
 		throw new RuntimeException("Unknown expression " + current_token.getType() + " with value " + current_token.getValue());
 	}
 	
-	private Token getTokenByRelativePosition(int add_position) {
+	private Expression array_element() {
+		String array_name = consume(ID).getValue();
+		consume(LSB);
+		Expression index = expression();
+		consume(RSB);
+		return new ArrayAccessExpression(array_name, index);
+	}
+
+	private Token look(int add_position) {
 		int pos = this.position + add_position;
 		if(hasTokenAt(pos))
 			return tokens.get(pos);
 		return new Token(TokenType.EOF);
 	}
 	
+	private boolean lookMatch(int add_position, TokenType type) {
+		return look(add_position).getType().equals(type);
+	}
+		
 	/**
 	 * Gibt einen Block von Statements zurueck. Z.B. fuer if(){...statements...}else{...statements...}
 	 * @return List<Statement> 
@@ -313,7 +356,7 @@ public class Parser {
 	 * @return boolean, true if given type equels to current (position will be increased), otherwise false
 	 */
 	private boolean is(TokenType type) {
-		Token token = this.getTokenByRelativePosition(0);
+		Token token = this.look(0);
 		if(!token.getType().equals(type)) 
 			return false;
 		this.position++;
@@ -326,7 +369,7 @@ public class Parser {
 	 * @return {@link TokenType} das aktuelle Token
 	 */
     private Token consume(TokenType type) {
-        final Token token = getTokenByRelativePosition(0);
+        final Token token = look(0);
         if (!token.getType().equals(type)) {
             throw new RuntimeException("Token " + token + " doesn't match " + type);
         }

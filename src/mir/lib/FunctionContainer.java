@@ -2,7 +2,6 @@ package mir.lib;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 public class FunctionContainer {
 	
@@ -17,9 +16,12 @@ public class FunctionContainer {
 			return new NumberValue(Math.pow(values[0].asDouble(), values[1].asDouble()));
 		});
 		
-		function_map.put("println", (Function) (Value...values) -> {
-			for(Value value: values) System.out.println(value.asString());
-			return _void;
+		function_map.put("console_in", (Function) (Value...values) -> {
+			return null;
+		});
+		
+		function_map.put("get_file", (Function) (Value...values) -> {
+			return null;
 		});
 		
 	}
