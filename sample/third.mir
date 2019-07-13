@@ -5,12 +5,21 @@ def create_array(a, b): return {a, b}
 
 def get_result(array):[
 	var: result = 0
-	for var: i = 0 end i < 2 end i = i + 1:[
-		result = result + array[i]
+	for var: i = 0 end i < size_of(array) end i = i + 1:[
+		result = sum(result, array[i])
 	]
 	return result
 ]
 
-var: array = create_array(10, 25)
+var: array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 var: result = get_result(array)
-print "Result is " + result
+
+print "Array: " + array + "\t with sum: " + result
+
+print "\n" + split("Hello world", "")
+
+print "\n\n"
+
+print same(array, array);
+
+print "\n" + get_time()

@@ -22,4 +22,15 @@ public class NumberValue implements Value{
 	public String toString() {
 		return asString();
 	}
+
+	@Override
+	public int length() {
+		return this.asString().length();
+	}
+
+	@Override
+	public int hash() {
+		return this.hashCode();
+	}
+
 }

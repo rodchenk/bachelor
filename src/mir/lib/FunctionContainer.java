@@ -16,14 +16,33 @@ public class FunctionContainer {
 			return new NumberValue(Math.pow(values[0].asDouble(), values[1].asDouble()));
 		});
 		
-		function_map.put("console_in", (Function) (Value...values) -> {
-			return null;
+		function_map.put("size_of", (Function) (Value...values) -> {
+			if(values.length != 1) throw new RuntimeException("Function 'size_of' expects 1 argument");
+			return new NumberValue(values[0].length());
+		});
+		
+		function_map.put("split", (Function) (Value...values) -> {
+			if(values.length != 2) throw new RuntimeException("Function 'split(Value, String)' expects 2 arguments");
+			return new ArrayValue( ((StringValue) values[0]).split(values[1]));
+		});
+		
+		function_map.put("same", (Function) (Value...values) -> {
+			if(values.length != 2) throw new RuntimeException("Function 'same(Object, Object)' expects 2 arguments");
+			return new BooleanValue(values[0].hash() == values[1].hash());
+		});
+		
+		function_map.put("get_time", (Function) (Value...values) -> {
+			if(values.length != 0) throw new RuntimeException("Function 'get_time()' does not have any arguments");
+			return new NumberValue(System.currentTimeMillis());
 		});
 		
 		function_map.put("get_file", (Function) (Value...values) -> {
 			return null;
 		});
 		
+		function_map.put("console_in", (Function) (Value...values) -> {
+			return null;
+		});
 	}
 	
 	public static Function getFunction(String name) {

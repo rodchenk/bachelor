@@ -6,4 +6,8 @@ public interface Value {
 	
 	double asDouble();
 		
+	int length();
+	
+	int hash();
+
 }

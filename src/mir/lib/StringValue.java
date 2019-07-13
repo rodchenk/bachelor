@@ -24,7 +24,24 @@ public class StringValue implements Value{
 	
 	@Override
 	public String toString() {
-		return "hello from StringValue";
+		return value;
 	}
 
+	@Override
+	public int length() {
+		return this.value.length();
+	}
+
+	public Value[] split(Value expression) {
+		String[] arr = this.value.split(expression.asString());
+		Value[] array  = new Value[arr.length];
+		for(int i = 0; i < array.length; i++) 
+			array[i] = new StringValue(arr[i]);
+		return array;
+	}
+
+	@Override
+	public int hash() {
+		return this.hashCode();
+	}
 }

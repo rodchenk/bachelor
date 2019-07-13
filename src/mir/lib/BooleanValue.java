@@ -32,4 +32,14 @@ public class BooleanValue implements Value{
 	public double asDouble() {
 		return value ? 1 : 0;
 	}
+
+	@Override
+	public int length() {
+		throw new RuntimeException("Can not get length of boolean value");
+	}
+
+	@Override
+	public int hash() {
+		return this.hashCode();
+	}
 }
