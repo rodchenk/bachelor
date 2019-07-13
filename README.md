@@ -44,6 +44,14 @@ var: temp = 100
 temp = 10
 print sum(temp, 34) + "\n"
 print diff(120, temp) + "\n"
+
+def get_array_sum(array):[
+	var: result = 0
+	for var: i = 0 end i < size_of(array) end i = i + 1:[
+		result = sum(result, array[i])
+	]
+	return result
+]
 ```
 
 ### Fibonacci numbers:
