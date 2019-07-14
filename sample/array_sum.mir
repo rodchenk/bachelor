@@ -1,0 +1,15 @@
+#bin/mir
+
+#@param array
+#@return sum of all array elements
+def get_result(array):[
+	var: result = 0
+	for var: i = 0 end i < size_of(array) end i = i + 1:[
+		result = sum(result, array[i])
+	]
+	return result
+]
+
+#@param a, @param b
+#@return sum of a and b
+def sum(a, b): return a + b
