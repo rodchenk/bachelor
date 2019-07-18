@@ -17,10 +17,16 @@ while cond:
 }
 ```
 
-### Print statement:
+### Include statement:
 ```ruby
-print str_var + "!\n" #Hello World!
-print (1 + 1 >= 1 * 2) + "\n"  #true
+#bin/mir
+include "array_sum"
+include "print_hello"
+
+var: array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+var: result = get_result(array) #returns sum of all array elements
+
+print "Array: " + array + "\t with sum: " + result
 ```
 
 ### Lööps:
