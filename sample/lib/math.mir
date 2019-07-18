@@ -1,0 +1,22 @@
+#bin/mir
+
+var: PI = 3.1415
+
+def math_sum(a, b):
+	return a + b
+
+def math_diff(a, b):
+	return a - b
+
+def math_radius(line):
+	return line * line * PI
+
+def math_pow(a, b):[
+	if b == 0: return 1
+	if b < 0: return a #TODO
+	var: result = a
+	for var: i = 1 end i < b end i = i + 1:[
+		result = result * a
+	]
+	return result
+]

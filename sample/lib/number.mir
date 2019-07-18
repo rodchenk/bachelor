@@ -1,0 +1,10 @@
+#!bin/mir
+#number lib
+
+var: ZERO = 0
+
+def num_compare(a, b):[
+	if a > b return 1
+	if a < b return -1
+	return 0
+]

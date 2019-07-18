@@ -1,0 +1,14 @@
+#!bin/mir
+#string library
+
+def length(str): 
+	return size_of(str)
+
+def char_at(index, str):[
+	array = split(str, "")
+	size = size_of(str)
+	if index - 1 >= size:
+		return ""
+	else
+		return array[index]
+]

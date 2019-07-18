@@ -15,30 +15,36 @@ public class IncludeScanner {
 		this.context = context;
 	}
 	
-	private boolean existInclude() {
-		return this.context.indexOf(INCLUDE) != -1;
+	private boolean existInclude(String str) {
+		return str.indexOf(INCLUDE) != -1;
 	}
 	
 	public String scan() {
-		if(!existInclude()) 
-			return this.context;
-
+		return this.replaceInclude(context);
+	}
+	
+	private String replaceInclude(String str) {
+		if(!existInclude(str)) 
+			return str;
+		
 		final StringBuilder builder = new StringBuilder();
-		final String[] lines = this.context.split(System.lineSeparator());
+		final String[] lines = str.split(System.lineSeparator());
 		
 		for(int i = 0; i < lines.length; i++) {
 			if(lines[i].indexOf(INCLUDE) != -1) {
 				String include = lines[i].replaceFirst(INCLUDE, "").replaceAll("\"", "");
 				try {
-					lines[i] = new String(Files.readAllBytes(Paths.get(this.path + include + EXTENSION )), "UTF-8");
+					lines[i] = new String(Files.readAllBytes(Paths.get(this.path + include + EXTENSION )), "UTF-8"); // read and set included file
 				} catch (IOException e1) {
-					System.err.println("No include file " + include + "found");
+					System.err.println("No included file '" + this.path + include + EXTENSION + "' found");
+					System.exit(1);
 				}
 			}
 		}
+
+		for(String line: lines) 
+			builder.append(line + System.lineSeparator());
 		
-		for(String line: lines) builder.append(line + System.lineSeparator());
-		
-		return builder.toString();
+		return replaceInclude(builder.toString());
 	}
 }

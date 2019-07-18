@@ -1,8 +1,13 @@
 #bin/mir
-include "array_sum"
-include "print_hello"
+include "lib/string"
+include "lib/number"
+include "lib/math"
 
-var: array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-var: result = get_result(array)
+var: str = "Hello, World"
+var: char = char_at(0, str)
+print char + "\n"
 
-print "Array: " + array + "\t with sum: " + result
+var: result = math_pow(10, 0)
+print result + "\n"
+
+print num_compare(2, 1)
