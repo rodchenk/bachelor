@@ -34,6 +34,7 @@ public class BinaryExpression implements Expression{
 					throw new RuntimeException("Unknown operator (" + operator + ") for binary Number expression");
 			}
 		}
+
 		if(!operator.equals(TokenType.PLUS)) 
 			throw new RuntimeException("Unknown operator (" + operator + ") for binary String concatenation");
 

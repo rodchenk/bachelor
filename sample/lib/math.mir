@@ -20,3 +20,17 @@ def math_pow(a, b):[
 	]
 	return result
 ]
+
+def round(a, b):[
+	var: array = split(a, "")
+	var: length = size_of(array)
+	var: base = ""
+	for var: i = 0 end i < length end i = i + 1:[
+		if array[i] == ".": end
+		base = base + array[i]
+	]
+	if b: 
+		return str_to_num(base)
+	else :
+		return base
+]	

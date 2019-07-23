@@ -3,6 +3,10 @@
 
 var: ZERO = 0
 
+#native library
+def to_num(a):
+	return str_to_num(a)
+
 def num_compare(a, b):[
 	if a > b return 1
 	if a < b return -1

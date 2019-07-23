@@ -2,6 +2,7 @@
 include "lib/string"
 include "lib/number"
 include "lib/math"
+include "lib/time"
 
 var: str = "Hello, World"
 var: char = char_at(0, str)
@@ -10,4 +11,6 @@ print char + "\n"
 var: result = math_pow(10, 0)
 print result + "\n"
 
-print num_compare(2, 1)
+print num_compare(2, 1) + "\n"
+
+print round(get_year(get_time()), false)

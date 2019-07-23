@@ -1,0 +1,6 @@
+#mir/lib
+
+def get_year(time):[
+	var: factor = 1000 * 60 * 60 * 24 * 365
+	return 1970 + time / factor
+]

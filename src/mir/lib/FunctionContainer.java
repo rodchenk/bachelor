@@ -23,6 +23,9 @@ public class FunctionContainer {
 		
 		function_map.put("split", (Function) (Value...values) -> {
 			if(values.length != 2) throw new RuntimeException("Function 'split(Value, String)' expects 2 arguments");
+			if(values[0] instanceof StringValue == false) {
+				values[0] = new StringValue(values[0].asString());
+			}
 			return new ArrayValue( ((StringValue) values[0]).split(values[1]));
 		});
 		
@@ -33,7 +36,8 @@ public class FunctionContainer {
 		
 		function_map.put("get_time", (Function) (Value...values) -> {
 			if(values.length != 0) throw new RuntimeException("Function 'get_time()' does not have any arguments");
-			return new NumberValue(System.currentTimeMillis());
+			long var = System.currentTimeMillis();
+			return new NumberValue(var);
 		});
 		
 		function_map.put("get_file", (Function) (Value...values) -> {
@@ -42,6 +46,10 @@ public class FunctionContainer {
 		
 		function_map.put("console_in", (Function) (Value...values) -> {
 			return null;
+		});
+		
+		function_map.put("str_to_num", (Function) (Value...values) -> {
+			return new NumberValue(values[0].asDouble());
 		});
 	}
 	
