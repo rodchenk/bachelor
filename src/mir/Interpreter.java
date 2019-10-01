@@ -18,7 +18,15 @@ public class Interpreter {
 	private static final String SAMPLE_PATH = "sample/";
 	private static final String FILE_NAME = "third.mir";
 	
-	private static void run(String program) {
+	private static void run(String path, boolean verbose) {
+		
+		String program = null;
+		try {
+			program = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
+		} catch (IOException e) {
+			System.err.println("File " + path + " could not be found");
+			System.exit(0);
+		}
 		TimeMeasurement.setMeasurement("Lexer");
 		IncludeScanner scanner = new IncludeScanner(SAMPLE_PATH, program);
 		String program_with_includes = scanner.scan();
@@ -27,19 +35,38 @@ public class Interpreter {
 		
 		List<Token> tokens = new Lexer(program_with_includes).tokenize();
 		System.out.println('\t' + "Lexer time: " + TimeMeasurement.getResult("Lexer") + "ms" + '\n');
-		tokens.stream().forEach(System.out::println);
 		
-		System.out.println("----------------------------------------");
+		if(verbose) {
+			tokens.stream().forEach(System.out::println);
+			
+			System.out.println("----------------------------------------");
+		}
 		
 		TimeMeasurement.setMeasurement("Parser");
 		Statement source = new Parser(tokens).parse();
-		System.out.println('\t' + "Parser time: " + TimeMeasurement.getResult("Parser") + "ms" + '\n');
-
+		
+		if(verbose) {
+			System.out.println('\t' + "Parser time: " + TimeMeasurement.getResult("Parser") + "ms" + '\n');
+		}
+		
 		source.execute();
 	}
 	
 	public static void main(String[] args) throws IOException {
-		String program = new String(Files.readAllBytes(Paths.get(SAMPLE_PATH + FILE_NAME)), "UTF-8");
-		Interpreter.run(program);
+		switch (args.length) {
+			case 1:	Interpreter.run(args[0], false); break;
+				
+			case 2:	Interpreter.run(args[0], true);  break;
+			
+			case 0:
+			default:
+				System.out.println("mir language. Version 0.1. 2019. Author: Mischa Rodchenkov");
+				System.out.println("USAGE:");
+				System.out.println("\t mir [path_to_file]");
+				System.out.println("\t mir [path_to_file] -v [verbose]");
+				System.exit(0);
+				break;
+		}
+
 	}
 }
