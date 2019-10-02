@@ -72,9 +72,9 @@ Die Standardfunktionen:
 def get_time()
 ```
 
-Funktion `size_of(string | array):number` gibt die Länge eines Zeichenkettes zurück, als Parameter erwartet sie `string` oder `array`.
+Funktion `size_of(string | array):number` gibt die Länge eines Strins zurück, als Param erwartet sie `string` oder `array`.
 
-```
+```ruby
 print size_of(["Ars", "longa", "vita", "brevis"]) == size_of("mir!") # true
 ```
 
