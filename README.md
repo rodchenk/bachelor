@@ -1,6 +1,6 @@
 # Language for those who appreciate simplicity
 
-*mir* ist eine interpretierbare Sprache, die in Java übersetzt wird. Die Sprache wurde im Rahmen der Abschlussarbeit erstellt.
+*mir* ist eine interpretierbare Sprache, die in Java übersetzt wird. Die Sprache wurde im Rahmen der Abschlussarbeit an der Technischen Hochschule Brandenburg erstellt.
 *mir* unterstützt alles, was eine normale GPL-Sprache haben muss:
 <img src="http://oregon.apwa.net/content/chapters/oregon.apwa.net/image/Chapter/Logos/MntGraphic.png" align="right" width="200">
 ### Variablen:
