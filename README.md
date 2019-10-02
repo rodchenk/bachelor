@@ -6,8 +6,9 @@
 ### Variablen:
 
 ```ruby
-var: my_variable = "Hello, mir"
-var: my_condition = true
+var: my_string = "Hello, mir"
+var: my_boolean = true
+var: my_number = -1.25
 ```
 
 ### Schleifen, Verzweigungen und bedingte Anweisungen:
@@ -64,3 +65,24 @@ include "lib/math"
 
 print math_sompare(1, 10) // -1
 ```
+
+Die Standardfunktionen:
+
+`get_time():number` liefert aktuelle Unixzeit zurück:
+```ruby
+def get_time()
+```
+
+Funktion `size_of(string | array):number` gibt die Länge eines Zeichenkettes zurück, als Parameter erwartet sie `string` oder `array`.
+Funktion `str_to_num` kann ein String zu Nummer umwandeln. Wenn es nicht klappt, wird die Funktion eine Fehlermeldung auslösen:
+
+```ruby
+def str_to_num(string):number
+```
+
+Ein String kann man mit `split` Methode zerlegen. Dabei bekommt Sie zwei Params: eine zu zerlegendes String und ein Pattern: 
+
+```ruby
+def split(target:string, muster:string):array
+```
+Wenn der erste Parameter nicht vom Typ String ist, wird die Methode versuchen, diesen Parameter zu String zu kasten und es zurückliefern.
