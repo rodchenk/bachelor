@@ -62,7 +62,7 @@ Auch andere Programmteile lassen sich einfach importieren und einfügen:
 ```ruby
 include "lib/math"
 
-print math_sompare(1, 10) // -1
+print math_sompare(1, 10) # -1
 ```
 
 Die Standardfunktionen:
@@ -77,11 +77,13 @@ Funktion `str_to_num` kann ein String zu Nummer umwandeln. Wenn es nicht klappt,
 
 ```ruby
 def str_to_num(string):number
+print str_to_number("+1.0") # 1.00
 ```
 
 Ein String kann man mit `split` Methode zerlegen. Dabei bekommt Sie zwei Params: eine zu zerlegendes String und ein Pattern: 
 
 ```ruby
 def split(target:string, muster:string):array
+print split("Cogito ergo sum", " ") # ["Cogito", "ergo", "sum"]
 ```
 Wenn der erste Parameter nicht vom Typ String ist, wird die Methode versuchen, diesen Parameter zu String zu kasten und es zurückliefern.
