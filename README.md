@@ -54,9 +54,7 @@ def fib(n):[
 ]
 
 var: _num = 10
-var: result = -1 * fib(_num)
-
-print _num + "'th Fib number is " + result; #10'th Fib number is 55
+print _num + "'th Fib number is " + fib(_num); #10'th Fib number is 55
 ```
 
 Auch andere Programmteile lassen sich einfach importieren und einfügen:
