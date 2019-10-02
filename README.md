@@ -9,6 +9,7 @@
 var: my_string = "Hello, mir"
 var: my_boolean = true
 var: my_number = -1.25
+var: my_array = [my_string, my_boolean, my_number]
 ```
 
 ### Schleifen, Verzweigungen und bedingte Anweisungen:
