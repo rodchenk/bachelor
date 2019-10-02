@@ -73,7 +73,12 @@ def get_time()
 ```
 
 Funktion `size_of(string | array):number` gibt die Länge eines Zeichenkettes zurück, als Parameter erwartet sie `string` oder `array`.
-Funktion `str_to_num` kann ein String zu Nummer umwandeln. Wenn es nicht klappt, wird die Funktion eine Fehlermeldung auslösen:
+
+```
+print size_of(["Ars", "longa", "vita", "brevis"]) == size_of("mir!") # true
+```
+
+Um ein String zu Nummer umzuwandeln, kann die Funktion `str_to_num` verwendet werden. Wenn die Umwandlung erfolglos ist, wird die Funktion eine Fehlermeldung auslösen:
 
 ```ruby
 def str_to_num(string):number
