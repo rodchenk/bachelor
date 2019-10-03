@@ -34,9 +34,10 @@ public class Interpreter {
 		//System.out.println(program_with_includes);
 		
 		List<Token> tokens = new Lexer(program_with_includes).tokenize();
-		System.out.println('\t' + "Lexer time: " + TimeMeasurement.getResult("Lexer") + "ms" + '\n');
 		
 		if(verbose) {
+			System.out.println('\t' + "Lexer time: " + TimeMeasurement.getResult("Lexer") + "ms" + '\n');
+			System.out.println("----------------------------------------");
 			tokens.stream().forEach(System.out::println);
 			
 			System.out.println("----------------------------------------");
