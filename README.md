@@ -21,7 +21,7 @@ java -jar <YOUR_FULL_PATH_TO_MIR>\MIR-pl\target\MIR-pl-0.0.1-SNAPSHOT-shaded.jar
 3. Schliesslich die Environment Variable setzen:
 
 ```sh
-set PATH=<<YOUR_FULL_PATH_TO_MIR>\MIR-pl\target>
+set PATH=<YOUR_FULL_PATH_TO_MIR>\MIR-pl\target
 ```
 
 Nun kann man die Sprache über Command Line benutzen:
