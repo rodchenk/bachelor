@@ -1,6 +1,38 @@
 # Language for those who appreciate simplicity
 
 *mir* ist eine interpretierbare Sprache, die in Java übersetzt wird. Die Sprache wurde im Rahmen der Abschlussarbeit an der Technischen Hochschule Brandenburg erstellt.
+
+### Installation:
+
+1. Als Erstes muss man herunterladen:
+
+```sh
+git clone https://github.com/rodchenk/mir-language.git
+```
+
+2. Dann unter MIR-pl/target in der Datei `mir.bat` muss der Pfad angepasst werden:
+
+```sh
+@echo off
+java -jar <YOUR_FULL_PATH_TO_MIR>\MIR-pl\target\MIR-pl-0.0.1-SNAPSHOT-shaded.jar %*
+```
+
+3. Schliesslich die Environment Variable setzen:
+
+```sh
+set PATH=<<YOUR_FULL_PATH_TO_MIR>\MIR-pl\target>
+```
+
+Nun kann man die Sprache über Command Line benutzen:
+
+```sh
+mischa$ echo print "My first mir-Program" > main.mir
+mischa$ mir main.mir
+	My first mir-Program
+```
+
+Zusatzlich kann die Dateie einen Parameter `-v` (verbose) bekommen. Versuchen Sie es einfach aus!
+
 *mir* unterstützt alles, was eine normale GPL-Sprache haben muss:
 <img src="http://oregon.apwa.net/content/chapters/oregon.apwa.net/image/Chapter/Logos/MntGraphic.png" align="right" width="200">
 ### Variablen:
