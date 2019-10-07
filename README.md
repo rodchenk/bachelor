@@ -21,8 +21,8 @@ set PATH=<YOUR_FULL_PATH_TO_MIR>\MIR-pl\target
 Nun kann man die Sprache über Command Line benutzen:
 
 ```sh
-mischa$ echo print "My first mir-Program" > main.mir
-mischa$ mir main.mir
+$ echo print "My first mir-Program" > main.mir
+$ mir main.mir
 	My first mir-Program
 ```
 
