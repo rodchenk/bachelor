@@ -1,0 +1,16 @@
+def sort(arr):[
+	var: length = size_of(arr)
+	for index = 0 end index < length end index = index + 1:
+		for in = 0 end in < length end in = in + 1:
+			if arr[index] < arr[in]:[
+				temp = arr[index]
+				arr[index] = arr[in]
+				arr[in] = temp
+			]	
+	return arr
+]
+
+var: array = {2, 3, 4, 5, 3, 4, 2, 34, 2, 56, 98, 32, 54, -1.5}
+var: sorted_array = sort(array)
+for i = 0 end i < size_of(sorted_array) end i = i + 1 
+	print sorted_array[i] + "\n"

@@ -1,0 +1,3 @@
+{
+	"cmd": ["java", "-jar", "C:\\xampp\\htdocs\\mir-language\\target\\MIR-pl-0.0.1-SNAPSHOT-shaded.jar", "$file", "-v"]	
+}
