@@ -9,16 +9,10 @@
 
 ```sh
 git clone https://github.com/rodchenk/mir-language.git
+cd mir-language/
 ```
 
-2. Dann unter MIR-pl/target in der Datei `mir.bat` muss der Pfad angepasst werden:
-
-```sh
-@echo off
-java -jar <YOUR_FULL_PATH_TO_MIR>\MIR-pl\target\MIR-pl-0.0.1-SNAPSHOT-shaded.jar %*
-```
-
-3. Schliesslich die Environment Variable setzen:
+2. Dann die Environment Variable setzen:
 
 ```sh
 set PATH=<YOUR_FULL_PATH_TO_MIR>\MIR-pl\target
@@ -27,8 +21,8 @@ set PATH=<YOUR_FULL_PATH_TO_MIR>\MIR-pl\target
 Nun kann man die Sprache über Command Line benutzen:
 
 ```sh
-mischa$ echo print "My first mir-Program" > main.mir
-mischa$ mir main.mir
+$ echo print "My first mir-Program" > main.mir
+$ mir main.mir
 	My first mir-Program
 ```
 
