@@ -1,4 +1,4 @@
-# Language for those who appreciates simplicity
+# Language for those who appreciate simplicity
 
 *mir* ist eine interpretierbare Sprache, die in Java übersetzt wird. Die Sprache wurde im Rahmen der Abschlussarbeit an der Technischen Hochschule Brandenburg erstellt.
 <img src="https://res.cloudinary.com/teepublic/image/private/s--HmlUQEaD--/t_Preview/b_rgb:ffffff,c_limit,f_auto,h_313,q_90,w_313/v1534768923/production/designs/3045119_0" align="right" width="200">
