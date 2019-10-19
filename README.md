@@ -37,7 +37,7 @@ Zusatzlich kann die Dateie einen Parameter `-v` (verbose) bekommen. Versuchen Si
 var: my_string = "Hello, mir"
 var: my_boolean = true
 var: my_number = -1.25
-var: my_array = [my_string, my_boolean, my_number]
+var: my_array = {my_string, my_boolean, my_number}
 ```
 
 ### Schleifen, Verzweigungen und bedingte Anweisungen:
@@ -93,7 +93,7 @@ include "lib/math"
 print math_sompare(1, 10) # -1
 ```
 
-Die Standardfunktionen:
+### Die Standardfunktionen:
 
 `get_time():number` liefert aktuelle Unixzeit zurück:
 ```ruby
