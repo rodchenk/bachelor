@@ -9,7 +9,6 @@
 
 ```sh
 git clone https://github.com/rodchenk/mir-language.git
-cd mir-language/
 ```
 
 2. Dann die Environment Variable setzen:
